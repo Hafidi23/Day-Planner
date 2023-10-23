@@ -54,7 +54,7 @@ export default function HomeScreen() {
         </View>
       
       </TouchableWithoutFeedback>
-       <Button
+         <Button
           title='check the ia'
           onPress={goToIa}
           color='coral'

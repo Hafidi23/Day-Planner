@@ -3,14 +3,14 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import {MaterialIcons} from '@expo/vector-icons'
 
 export default function Todoitem({ item,pressHandler }) {
-  return ( <Text>isa</Text>/*
+  return (
     <TouchableOpacity onPress={()=> pressHandler(item.key)}>
       <View style={styles.item}>
         <MaterialIcons name="delete" size={18} />
         <Text style={styles.itemText}>{item.text}</Text>
       </View>
     </TouchableOpacity>
-  */);
+  );
 }
 const styles = StyleSheet.create({
   item: {
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     borderStyle: "dashed",
     borderRadius: 10,
     flexDirection: 'row',
+    marginBottom: 0,
   },
   itemText: {
     marginLeft: 10,
