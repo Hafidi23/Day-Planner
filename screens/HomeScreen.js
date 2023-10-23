@@ -54,19 +54,22 @@ export default function HomeScreen() {
         </View>
       
       </TouchableWithoutFeedback>
+      <View style={styles.containerButton}>
          <Button
           title='check the ia'
           onPress={goToIa}
-          color='coral'
+          color='coral'     
         
-           />
+        
+        />
+        </View>
     </View>
   );
 } 
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+   
   },
   content: {
     padding: 40,
@@ -74,4 +77,9 @@ const styles = StyleSheet.create({
   list: {
     marginTop: 20,
   },
+  containerButton: {
+    alignItems: 'center',
+    marginBottom: 10,
+    
+  }
 });

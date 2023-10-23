@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import { Button, Text, View, StyleSheet, FlatList, TextInput, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
@@ -8,80 +8,79 @@ export default function ChatPage() {
     const backHome = () => {
         navigation.navigate("Home")
     }
-    const [data, setData] = useState([])
-    const apiKey = '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'
-    const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions'
-    const [textInput, setTextInput] = useState('')
-
+    const [data, setData] = useState([]);
+    const apiKey = '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';
+    const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions';
+    const [textInput, setTextInput] = useState('');
 
     const handleSend = async () => {
-        const prompt = textInput
-        const response = await axios.post(apiUrl, {
-            prompt: prompt,
-            max_tokens: 1024,
-            temperature: 0.5
-        }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`
+        try {
+            const prompt = textInput;
+            const response = await axios.post(apiUrl, {
+                prompt: prompt,
+                max_tokens: 1024,
+                temperature: 0.5
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                }
+            });
+            const text = response.data.choices[0].text;
+            setData([...data, { type: 'user', 'text': textInput }, { type: 'bot', 'text': text }]);
+            setTextInput('');
+        } catch (error) {
+            if (error.response && error.response.status === 429) {
+                console.log('Rate limit exceeded. Waiting before making the next request...');
+                // Puoi gestire il rate limit qui, ad esempio, ritardando la prossima richiesta.
+            } else {
+                console.error('Errore durante la richiesta:', error);
             }
-        });
-        const text = response.data.choices[0].text;
-        setData([...data, { type: 'user', 'text': textInput }, { type: 'bot', 'text': text }]);
-        setTextInput('');
+        }
     }
+
     return (
-        
-        <View>
-            <Text>Here you can ask to the IA to set your day!</Text>
+        <View style={{ flex: 1 }}>
+            <Text>Here you can ask the AI to set your day!</Text>
             <FlatList
                 data={data}
                 keyExtractor={(item, index) => index.toString()}
                 style={styles.body}
                 renderItem={({ item }) => (
-                    <View style={{flexDirection:'row', padding:10}}>
-                        <Text style={{ fontWeight: 'bold', color: item.type === 'user' ? 'green' : 'red' }}>{item.type === 'user' ? 'Ninza' : 'Bot'}</Text>;
+                    <View style={{ flexDirection: 'row', padding: 10 }}>
+                        <Text style={{ fontWeight: 'bold', color: item.type === 'user' ? 'green' : 'red' }}>{item.type === 'user' ? 'Ninza' : 'Bot'}</Text>
                         <Text style={styles.bot}>{item.text}</Text>
                     </View>
-                    
                 )}
-            
             />
-
             <TextInput
                 style={styles.input}
                 value={textInput}
                 onChangeText={text => setTextInput(text)}
                 placeholder="Ask me anything"
-            
             />
             <TouchableOpacity
                 style={styles.submit}
                 onPress={handleSend}
             >
-                    <Text style= {styles.buttonText}>Let's Go</Text>
-
+                <Text style={styles.buttonText}>Let's Go</Text>
             </TouchableOpacity>
-
-            <Button style={styles.button}
+            <Button
                 title="Back home"
                 onPress={backHome}
-                color='coral'
+                color="coral"
+                style={styles.button}
             />
-            
         </View>
     );
-
-};
+}
 
 const styles = StyleSheet.create({
-    button: {
-       
-    },
+    button: {},
     body: {
-        width: '102%',
+        flex: 1,
+        width: '100%',
         margin: 10,
-
     },
     bot: {
         fontSize: 16,
@@ -93,7 +92,6 @@ const styles = StyleSheet.create({
         height: 60,
         marginBottom: 10,
         borderRadius: 10,
-
     },
     submit: {
         backgroundColor: 'coral',
@@ -107,7 +105,6 @@ const styles = StyleSheet.create({
     buttonText: {
         fontSize: 25,
         fontWeight: 'bold',
-        color: '#ffff'
+        color: '#fff'
     }
-   
-})
+});
