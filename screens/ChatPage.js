@@ -9,7 +9,7 @@ export default function ChatPage() {
         navigation.navigate("Home")
     }
     const [data, setData] = useState([]);
-    const apiKey = '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';
+    const apiKey = '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';
     const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions';
     const [textInput, setTextInput] = useState('');
 
@@ -32,7 +32,6 @@ export default function ChatPage() {
         } catch (error) {
             if (error.response && error.response.status === 429) {
                 console.log('Rate limit exceeded. Waiting before making the next request...');
-                // Puoi gestire il rate limit qui, ad esempio, ritardando la prossima richiesta.
             } else {
                 console.error('Errore durante la richiesta:', error);
             }
