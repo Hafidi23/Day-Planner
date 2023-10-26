@@ -10,7 +10,7 @@ export default function ChatPage() {
     }
     const [data, setData] = useState([]);
     const apiKey = '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';
-    const apiUrl = 'https://api.openai.com/v1/engines/text-davinci-002/completions';
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
     const [textInput, setTextInput] = useState('');
 
     const handleSend = async () => {
