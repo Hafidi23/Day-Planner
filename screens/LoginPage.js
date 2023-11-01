@@ -24,7 +24,7 @@ import { useNavigation } from "@react-navigation/native";
       <View style={styles.text1}>
         <Text>Don't have an account ?</Text>
         <TouchableOpacity
-          onPress={() => {
+          onPress={() => {e
             navigation.navigate("SignupPage");
           }}
         >
@@ -50,6 +50,7 @@ import { useNavigation } from "@react-navigation/native";
                 }}
               />
             }
+            
             variant="outline"
             placeholder="Username or Email"
             _light={{
@@ -58,6 +59,7 @@ import { useNavigation } from "@react-navigation/native";
             _dark={{
                placeholderTextColor: "blueGray.50"
             }}
+            
           />
           
           </View>

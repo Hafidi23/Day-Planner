@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, FlatList, StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { Button, FlatList, StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard,SafeAreaView } from "react-native";
 import Header from "../components/Header";
 import TodoItem from "../components/TodoItem";
 import AddTodo from "../components/AddTodo";
@@ -33,6 +33,7 @@ export default function HomeScreen() {
   };
 
   return (  
+    <SafeAreaView>
     <View>
       <TouchableWithoutFeedback onPress={() => {
         Keyboard.dismiss();
@@ -63,12 +64,14 @@ export default function HomeScreen() {
         
         />
         </View>
-    </View>
+      </View>
+      </SafeAreaView>
   );
 } 
 
 const styles = StyleSheet.create({
   container: {
+    marginTop:20,
    
   },
   content: {

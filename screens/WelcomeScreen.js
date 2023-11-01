@@ -1,4 +1,4 @@
-import { View, Text, SafeAreaView, Image, TouchableOpacity } from 'react-native'
+import { View, Text, SafeAreaView, Image, TouchableOpacity, StyleSheet } from 'react-native'
 import React from 'react'
 import { useNavigation } from '@react-navigation/native'
 import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
@@ -6,18 +6,17 @@ import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-nativ
 export default function WelcomeScreen() {
     const navigation = useNavigation();
   return (
-    <SafeAreaView className="flex-1 flex justify-around bg-white">
-        {/* title */}
+    <SafeAreaView style={styles.container}>
         <View className="space-y-2">
-            <Text style={{fontSize: wp(10)}} className="text-center font-bold text-gray-700">
+            <Text style={styles.title}>
                 Jarvis
             </Text>
-            <Text style={{fontSize: wp(4)}} className="text-center tracking-wider font-semibold text-gray-600">
+            <Text >
                 The future is here, powerd by AI.
             </Text>
         </View>
         
-        {/* assistant image */}
+    
         <View className="flex-row justify-center">
             <Image  
                 source={require('../assets/welcome.png')}
@@ -25,12 +24,32 @@ export default function WelcomeScreen() {
             />
         </View>
         
-        {/* start button */}
         <TouchableOpacity onPress={()=> navigation.navigate('Home')} className="bg-emerald-600 mx-5 p-4 rounded-2xl">
-            <Text style={{fontSize: wp(6)}} className="text-center font-bold text-white">
+              <Text style={ styles.button}>
                 Get Started
             </Text>
         </TouchableOpacity>
     </SafeAreaView>
   )
 }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent:'space-around'
+        
+    },
+    title: {
+        fontSize: 50,
+        fontWeight: 'bold',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginLeft:30
+    },
+    button: {
+        fontWeight:'bold',
+        fontSize: 30,
+    }
+
+
+})
