@@ -21,7 +21,7 @@ const SignupPage = () => {
       </View>
       <View style ={styles.text2}>
         <Text>Already have an account?</Text>
-        <TouchableOpacity onPress={() => navigation.navigate("LoginPage")}>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
           <Text style={styles.sigupText}>Login</Text>
 
         </TouchableOpacity>
@@ -183,7 +183,9 @@ const SignupPage = () => {
             <Image
               roundedTop={10}
               alt="image"
-              source={require('../assets/googleLogo.png')}
+              source={{
+                uri:"https://www.transparentpng.com/thumb/twitter/twitter-bird-logo-pictures-0.png"
+              }}
               resizeMode="contain"
             
             
@@ -205,7 +207,9 @@ const SignupPage = () => {
             <Image
               roundedTop={10}
               alt="image"
-              source={require('../assets/facebook.png')}
+              source={{
+                uri:"https://www.transparentpng.com/thumb/facebook-logo-png/photo-facebook-logo-png-hd-25.png"
+              }}
               resizeMode="contain"
             
             
@@ -227,7 +231,9 @@ const SignupPage = () => {
             <Image
               roundedTop={10} 
               alt="image"
-              source={require('../assets/instagram.png')}
+              source={{
+                uri:"https://www.transparentpng.com/thumb/google-logo/colorful-google-logo-transparent-clipart-download-u3DWLj.png"
+              }}
               resizeMode="contain"
             
             />
@@ -279,7 +285,7 @@ const styles = StyleSheet.create({
   },
   buttonStylex: {
     marginTop: 12,
-    marginLeft: 15,
+    marginLeft: 30,
     marginRight: 15
   },
   buttonDesign: {

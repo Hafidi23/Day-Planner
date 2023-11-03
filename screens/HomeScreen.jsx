@@ -37,12 +37,12 @@ export default function HomeScreen() {
     <View>
       <TouchableWithoutFeedback onPress={() => {
         Keyboard.dismiss();
-        console.log('dismissed keyoard');
       }}>
         <View style={styles.container}>
-          <Header />
+            <Header />
+            
           <View style={styles.content}>
-           <AddTodo submitHandler={submitHandler} />
+          <AddTodo submitHandler={submitHandler}/>
             <View style={styles.list}>
               <FlatList
                 data={todos}

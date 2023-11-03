@@ -14,7 +14,10 @@ import { useNavigation } from "@react-navigation/native";
 
 
  function LoginPage() {
-  const navigation = useNavigation();
+   const navigation = useNavigation();
+   const enter = () => {
+     navigation.navigate("Home")
+   }
 
   return (
     <View style={styles.container}>
@@ -24,8 +27,8 @@ import { useNavigation } from "@react-navigation/native";
       <View style={styles.text1}>
         <Text>Don't have an account ?</Text>
         <TouchableOpacity
-          onPress={() => {e
-            navigation.navigate("SignupPage");
+          onPress={() => {
+            navigation.navigate("Signup");
           }}
         >
           <Text style = {styles.signupText}>Sign Up</Text>
@@ -34,7 +37,7 @@ import { useNavigation } from "@react-navigation/native";
 
       {/* Username or Email input Field*/}
  
-      <View style={styles.butttoStyle}>
+      <View style={styles.buttonStyle}>
         <View style={styles.emailInput}>
           <Input
             InputLeftElement={
@@ -100,7 +103,9 @@ import { useNavigation } from "@react-navigation/native";
       {/*Button*/}
 
       <View style={styles.buttonStyle}>
-        <Button style={styles.buttonDesign}>
+        <Button style={styles.buttonDesign}
+          onPress={enter}
+        >
           LOGIN
         </Button>
       </View>
@@ -132,10 +137,9 @@ import { useNavigation } from "@react-navigation/native";
             <Image
               roundedTop={10}
               alt="image"
-              source={require('../assets/googleLogo.png')}
-              resizeMode="contain"
-            
-            
+              source={{
+                uri:"https://www.transparentpng.com/thumb/google-logo/colorful-google-logo-transparent-clipart-download-u3DWLj.png"
+              }}
             />
             </AspectRatio>
         </Box>
@@ -154,7 +158,9 @@ import { useNavigation } from "@react-navigation/native";
             <Image
               roundedTop={10}
               alt="image"
-              source={require('../assets/facebook.png')}
+              source={{
+                uri:"https://www.transparentpng.com/thumb/facebook-logo-png/photo-facebook-logo-png-hd-25.png"
+              }}
               resizeMode="contain"
             
             
@@ -176,7 +182,9 @@ import { useNavigation } from "@react-navigation/native";
             <Image
               roundedTop={10} 
               alt="image"
-              source={require('../assets/instagram.png')}
+              source={{
+                uri:"https://www.transparentpng.com/thumb/twitter/twitter-bird-logo-pictures-0.png"
+              }}
               resizeMode="contain"
             
             />

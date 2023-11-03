@@ -18,8 +18,7 @@ export default function ChatPage() {
             const prompt = textInput;
             const response = await axios.post(apiUrl, {
                 prompt: prompt,
-                max_tokens: 1024,
-                temperature: 0.5
+                model: "gpt-3.5-turbo-0613",
             }, {
                 headers: {
                     'Content-Type': 'application/json',

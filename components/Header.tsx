@@ -2,24 +2,43 @@ import { StyleSheet, Text, View } from "react-native";
 
 export default function Header() {
   return (
-    <View style={styles.Header}>
-      <Text style={styles.title}>My Todos</Text>
+    <View>
+      <View style={styles.lineStyle}>
+        <View
+          style={{
+            flex: 1,
+            height: 1,
+            backgroundColor: "rgba(76, 175, 80, 0.3)",
+          }}
+        />
+        <View>
+          <Text style={styles.title}>
+            Todo<Text style={{ fontWeight: "300", color: "coral" }}>List</Text>
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 1,
+            height: 1,
+            backgroundColor: "rgba(76, 175, 80, 0.3)",
+          }}
+        />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  Header: {
-    marginTop: 10,
-    height: 60,
-    paddingTop: 38,
-    backgroundColor: "coral",
-  },
   title: {
-    textAlign: "center",
     marginTop: -20,
-    color: "#fff",
-    fontSize: 20,
-    fontWeight: "bold",
+    color: "black",
+    fontSize: 38,
+    fontWeight: "800",
+    paddingHorizontal: 30,
+  },
+  lineStyle: {
+    flexDirection: "row",
+    marginTop: 30,
+    alignItems: "center",
   },
 });
