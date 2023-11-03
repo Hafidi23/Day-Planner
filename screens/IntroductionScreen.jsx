@@ -18,6 +18,7 @@ import data from '../src/data/data';
 import Pagination from '../src/components/Pagination';
 import CustomButton from '../src/components/CustomButton';
 
+
 const OnboardingScreen = () => {
   const {width: SCREEN_WIDTH} = useWindowDimensions();
   const flatListRef = useAnimatedRef(null);
