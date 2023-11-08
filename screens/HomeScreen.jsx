@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, FlatList, StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard,SafeAreaView } from "react-native";
+import { Button, FlatList, StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard, ScrollView } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import TodoItem from "../components/TodoItem";
 import AddTodo from "../components/AddTodo";
@@ -14,9 +15,8 @@ export default function HomeScreen() {
   ]);
   const navigation = useNavigation();
   
-  
   const goToIa = () => {
-    navigation.navigate(ChatPage)
+    navigation.navigate(ChatPage);
   };
 
   const pressHandler = (key) => {
@@ -33,49 +33,43 @@ export default function HomeScreen() {
   };
 
   return (  
-    <SafeAreaView>
-    <View>
-      <TouchableWithoutFeedback onPress={() => {
-        Keyboard.dismiss();
-      }}>
-        <View style={styles.container}>
-            <Header />
-            
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.container}>
+        <TouchableWithoutFeedback onPress={() => {
+          Keyboard.dismiss();
+        }}>
           <View style={styles.content}>
-          <AddTodo submitHandler={submitHandler}/>
-            <View style={styles.list}>
-              <FlatList
-                data={todos}
-                renderItem={({ item }) => (
-                  <TodoItem item={item} pressHandler={pressHandler} />
-                )}
-              />
+            <Header />
+            <View style={styles.Add}>
+            <AddTodo submitHandler={submitHandler} />
             </View>
           </View>
-        </View>
-      
-      </TouchableWithoutFeedback>
-      <View style={styles.containerButton}>
-         <Button
-          title='check the ia'
-          onPress={goToIa}
-          color='coral'     
-        
-        
+        </TouchableWithoutFeedback>
+        <FlatList
+          data={todos}
+          renderItem={({ item }) => (
+            <TodoItem item={item} pressHandler={pressHandler} />
+          )}
+          style={styles.list}
         />
+        <View style={styles.containerButton}>
+          <Button
+            title='check the ia'
+            onPress={goToIa}
+            color='coral'     
+          />
         </View>
       </View>
-      </SafeAreaView>
+    </SafeAreaView>
   );
 } 
 
 const styles = StyleSheet.create({
   container: {
-    marginTop:20,
-   
+    flex: 1,
   },
-  content: {
-    padding: 40,
+  Add: {
+    alignItems:"center"
   },
   list: {
     marginTop: 20,
@@ -83,6 +77,5 @@ const styles = StyleSheet.create({
   containerButton: {
     alignItems: 'center',
     marginBottom: 10,
-    
   }
 });

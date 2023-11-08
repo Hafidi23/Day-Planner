@@ -68,10 +68,11 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     width: 40,
     height: 40,
-    marginLeft: 120,
+    marginTop: 10
   },
   plusButtonText: {
-    fontSize: 24,
+    fontSize: 28,
+    fontWeight:"bold",
     color: "coral",
   },
   input: {
@@ -98,7 +99,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 14,
     marginTop: 8,
-    marginLeft:115
     },
     plusButtonContainer: {
         alignItems: "center",

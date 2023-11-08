@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import {
   Input,
@@ -10,6 +11,7 @@ import {
 } from "native-base";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import * as Yup from 'yup';
 
 
 
@@ -18,6 +20,31 @@ import { useNavigation } from "@react-navigation/native";
    const enter = () => {
      navigation.navigate("Home")
    }
+    const [formValues, setFormValues] = useState({ email: '', password: '' });
+    const [errors, setErrors] = useState({});
+
+   const validationSchema = Yup.object().shape({
+    email: Yup.string()
+      .email('Inserisci un indirizzo email valido')
+      .required('L\'email è obbligatoria'),
+    password: Yup.string()
+      .min(6, 'La password deve essere lunga almeno 6 caratteri')
+      .required('La password è obbligatoria'),
+   });
+   const handleLogin = async () => {
+    try {
+      await validationSchema.validate(formValues, { abortEarly: false });
+     enter()
+    } catch (error) {
+      const validationErrors = {};
+      error.inner.forEach((e) => {
+        validationErrors[e.path] = e.message;
+      });
+      setErrors(validationErrors);
+    }
+  };
+  
+  
 
   return (
     <View style={styles.container}>
@@ -51,9 +78,9 @@ import { useNavigation } from "@react-navigation/native";
                 _dark={{
                     color:"gray.300",
                 }}
+               
               />
             }
-            
             variant="outline"
             placeholder="Username or Email"
             _light={{
@@ -62,9 +89,9 @@ import { useNavigation } from "@react-navigation/native";
             _dark={{
                placeholderTextColor: "blueGray.50"
             }}
-            
+          onChangeText={(text) => setFormValues({ ...formValues, email: text})}
           />
-          
+          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
           </View>
 
       </View>
@@ -96,7 +123,9 @@ import { useNavigation } from "@react-navigation/native";
             _dark={{
                 placeholderTextColor:"blueGray.50"
             }}
+            onChangeText={(text) => setFormValues({ ...formValues, password: text})}
           />
+          {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
         </View>
       </View>
 
@@ -104,7 +133,7 @@ import { useNavigation } from "@react-navigation/native";
 
       <View style={styles.buttonStyle}>
         <Button style={styles.buttonDesign}
-          onPress={enter}
+          onPress={handleLogin}
         >
           LOGIN
         </Button>
@@ -260,5 +289,9 @@ const styles = StyleSheet.create({
     marginRight: 15,
     justifyContent:'space-around'
     
+  },
+  errorText: {
+    color: 'red',
+    fontSize:14,
   }
 });
