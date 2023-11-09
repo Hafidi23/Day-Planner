@@ -8,17 +8,21 @@ export default function ChatPage() {
     const backHome = () => {
         navigation.navigate("Home")
     }
-    const [data, setData] = useState([]);
-    const apiKey = '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';
+    const [data, setData] = useState([
+        { type: 'bot', text: "Hello! Ask me anything." }
+      ]);
+      
+    const apiKey = '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';
     const apiUrl = 'https://api.openai.com/v1/chat/completions';
     const [textInput, setTextInput] = useState('');
+
 
     const handleSend = async () => {
         try {
             const prompt = textInput;
             const response = await axios.post(apiUrl, {
                 prompt: prompt,
-                model: "gpt-3.5-turbo-0613",
+                model: "gpt-3.5-turbo",
             }, {
                 headers: {
                     'Content-Type': 'application/json',
@@ -42,15 +46,16 @@ export default function ChatPage() {
             <Text>Here you can ask the AI to set your day!</Text>
             <FlatList
                 data={data}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => `${index}-${item.type}`}
                 style={styles.body}
                 renderItem={({ item }) => (
                     <View style={{ flexDirection: 'row', padding: 10 }}>
-                        <Text style={{ fontWeight: 'bold', color: item.type === 'user' ? 'green' : 'red' }}>{item.type === 'user' ? 'Ninza' : 'Bot'}</Text>
-                        <Text style={styles.bot}>{item.text}</Text>
+                    <Text style={{ fontWeight: 'bold', color: item.type === 'user' ? 'green' : 'red' }}>{item.type === 'user' ? 'You' : 'Bot'}</Text>
+                    <Text style={styles.bot}>{item.text}</Text>
                     </View>
                 )}
-            />
+                />
+
             <TextInput
                 style={styles.input}
                 value={textInput}

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, FlatList, StyleSheet, Text, View, TouchableWithoutFeedback, Keyboard, ScrollView } from "react-native";
+import { Button, FlatList, StyleSheet, View, TouchableWithoutFeedback, Keyboard } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import TodoItem from "../components/TodoItem";
@@ -15,9 +15,7 @@ export default function HomeScreen() {
   ]);
   const navigation = useNavigation();
   
-  const goToIa = () => {
-    navigation.navigate(ChatPage);
-  };
+
 
   const pressHandler = (key) => {
     setTodos((prevTodos) => {
@@ -53,11 +51,7 @@ export default function HomeScreen() {
           style={styles.list}
         />
         <View style={styles.containerButton}>
-          <Button
-            title='check the ia'
-            onPress={goToIa}
-            color='coral'     
-          />
+        
         </View>
       </View>
     </SafeAreaView>
@@ -74,8 +68,4 @@ const styles = StyleSheet.create({
   list: {
     marginTop: 20,
   },
-  containerButton: {
-    alignItems: 'center',
-    marginBottom: 10,
-  }
 });
