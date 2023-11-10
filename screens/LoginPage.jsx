@@ -18,8 +18,9 @@ import * as Yup from 'yup';
  function LoginPage() {
    const navigation = useNavigation();
    const enter = () => {
-     navigation.navigate("Home")
+     navigation.navigate("Goal")
    }
+   
     const [formValues, setFormValues] = useState({ email: '', password: '' });
     const [errors, setErrors] = useState({});
 
@@ -43,7 +44,6 @@ import * as Yup from 'yup';
       setErrors(validationErrors);
     }
   };
-  
   
 
   return (
@@ -72,12 +72,7 @@ import * as Yup from 'yup';
                 as={<FontAwesome5 name="user-secret" />}
                 size="sm"
                 m={2}
-                _light={{
-                    color: 'black',
-                }}
-                _dark={{
-                    color:"gray.300",
-                }}
+                
                
               />
             }
@@ -106,12 +101,7 @@ import * as Yup from 'yup';
                 as={<FontAwesome5 name="key" />}
                 size="sm"
                 m={2}
-                _light={{
-                  color:"black"
-                }}
-                _dark={{
-                  color:"gray.300"
-                }}
+                
                   />
             } 
             variant="outline"
@@ -155,12 +145,7 @@ import * as Yup from 'yup';
           onPress={() => navigation.navigate('#')}
           style={{ height: 80, width: 80, marginLeft: 20 }}
           shadow={3}
-          _light={{
-              backgroundColor:"gray.50",
-          }}
-          _dark={{
-              backgroundColor: "gray.700",
-          }}
+         
         >
           <AspectRatio ratio={1/1}>
             <Image
@@ -175,13 +160,7 @@ import * as Yup from 'yup';
         <Box
           onPress={() => navigation.navigate('#')}
           style={{ height: 80, width: 80, marginLeft: 20 }}
-          shadow={3}
-          _light={{
-              backgroundColor:"gray.50",
-          }}
-          _dark={{
-              backgroundColor: "gray.700",
-          }}
+         
         >
           <AspectRatio ratio={1/1}>
             <Image
@@ -200,12 +179,7 @@ import * as Yup from 'yup';
           onPress={() => navigation.navigate('#')}
           style={{ height: 80, width: 80, marginLeft: 20 }}
           shadow={3}
-          _light={{
-              backgroundColor:"gray.50",
-          }}
-          _dark={{
-              backgroundColor: "gray.700",
-          }}
+       
         >
           <AspectRatio ratio={1/1}>
             <Image

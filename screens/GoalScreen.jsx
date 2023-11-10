@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ImageBackground, Dimensions,TouchableOpacity,KeyboardAvoidingView, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet, ImageBackground, Dimensions,TouchableOpacity,KeyboardAvoidingView, Image, Animated } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import background from '../assets/background.jpg'
 import goals from '../assets/goals.jpg'
@@ -14,10 +14,24 @@ const GoalScreen = () => {
   const [timePerDay, setTimePerDay] = useState('');
   const [timeOfDay, setTimeOfDay] = useState('morning');
   const [currentField, setCurrentField] = useState('goal'); 
-  const windowDimension = Dimensions.get('window');
+  const windowDimension = Dimensions.get('screen');
+  const [inputAnimation] = useState(new Animated.ValueXY({ x: 0, y: 0 }));
   const [title, setTitle] = useState("Qui devi inserire l'obbiettivo che vuoi raggiungere")
   const [currentImage, setCurrentImage]= useState(goals)
   const navigation = useNavigation();
+
+  const handleTransition = (nextField, direction) => {
+    const destination = direction === 'forward' ? -Dimensions.get('window').width : Dimensions.get('window').width;
+
+    Animated.timing(inputAnimation.x, {
+      toValue: destination,
+      duration: 500,
+      useNativeDriver: false,
+    }).start(() => {
+      setCurrentField(nextField);
+      inputAnimation.setValue({ x: 0, y: 0 });
+    });
+  };
 
   const handleGoHome = () => {
     navigation.navigate('TabNavigator');
@@ -33,31 +47,33 @@ const RoundedButton = ({ title, onPress, color }) => {
     </TouchableOpacity>
   );
 };
-
-  const handleSaveGoal = () => {
-   
-    setCurrentField('deadline');
-  };
-
-  const handleSaveDeadline = () => {
   
-    setCurrentField('timePerDay');
-  };
+  
+const resetAnimation = () => {
+  inputAnimation.setValue({ x: 0, y: 0 });
+};
+  
+const handleSaveGoal = () => {
+  handleTransition('deadline', 'forward');
+};
 
-  const handleSaveTimePerDay = () => {
-    
-    setCurrentField('timeOfDay');
-  };
+const handleSaveDeadline = () => {
+  handleTransition('timePerDay', 'forward');
+};
 
-  const handleGoBack = () => {
-    if (currentField === 'deadline') {
-      setCurrentField('goal');
-    } else if (currentField === 'timePerDay') {
-      setCurrentField('deadline');
-    } else if (currentField === 'timeOfDay') {
-      setCurrentField('timePerDay');
-    }
-  };
+const handleSaveTimePerDay = () => {
+  handleTransition('timeOfDay', 'forward');
+};
+
+const handleGoBack = () => {
+  if (currentField === 'deadline') {
+    handleTransition('goal', 'backward');
+  } else if (currentField === 'timePerDay') {
+    handleTransition('deadline', 'backward');
+  } else if (currentField === 'timeOfDay') {
+    handleTransition('timePerDay', 'backward');
+  }
+};
   useEffect(() => {
     if (currentField === 'goal') {
       setTitle("Qui devi inserire l'obbiettivo che vuoi raggiungere");
@@ -83,11 +99,11 @@ const RoundedButton = ({ title, onPress, color }) => {
   
 
   return (
+    
     <ImageBackground
       style={{
-        width: windowDimension.width,
-        height: windowDimension.height,
-        flex: 1
+        resizeMode:"cover",
+        flex: 1,
       }}
       source={background}
     >
@@ -96,7 +112,17 @@ const RoundedButton = ({ title, onPress, color }) => {
       behavior="padding"
       >
         <View style={styles.spacer}></View>
-        <View style={styles.container}>
+        <Animated.View
+        style={[
+          styles.container,
+          {
+            transform: [
+              { translateX: inputAnimation.x },
+              { translateY: inputAnimation.y },
+            ],
+          },
+        ]}
+      >
         <View style={styles.imageContainer}>
           <Image source={currentImage} style={styles.icon} />
         </View>
@@ -109,6 +135,7 @@ const RoundedButton = ({ title, onPress, color }) => {
               placeholder="Nome dell'obiettivo"
               value={goal}
               onChangeText={(text) => setGoal(text)}
+              onFocus={resetAnimation}
             />
           )}
           {currentField === 'deadline' && (
@@ -117,6 +144,7 @@ const RoundedButton = ({ title, onPress, color }) => {
               placeholder="Data di scadenza"
               value={deadline}
               onChangeText={(text) => setDeadline(text)}
+              onFocus={resetAnimation}
             />
           )}
           {currentField === 'timePerDay' && (
@@ -126,6 +154,8 @@ const RoundedButton = ({ title, onPress, color }) => {
               value={timePerDay}
               onChangeText={(text) => setTimePerDay(text)}
               keyboardType="numeric"
+              onFocus={resetAnimation}
+              
             />
           )}
           {currentField === 'timeOfDay' && (
@@ -152,51 +182,54 @@ const RoundedButton = ({ title, onPress, color }) => {
             <RoundedButton title="Continua" onPress={handleGoHome} color="coral" />
           )}
           <View style={styles.back}>
-            {currentField !== 'goal' && (
-              <RoundedButton title="Indietro" onPress={() => handleGoBack()} color="coral" />
-            )}
-          </View>
-        
-        
-        </View>
+              {currentField !== 'goal' && (
+                <RoundedButton title="Indietro" onPress={() => handleGoBack()} color="coral" />
+              )}
+            </View>
+        </Animated.View>
       </KeyboardAvoidingView>
-    </ImageBackground>
+      </ImageBackground>
+      
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    flex: 1,
     padding: 10,
-    justifyContent: "flex-end",
-   marginBottom: 10,
+    justifyContent: "center",
+    marginBottom: 30,
     backgroundColor: "rgba(255, 255, 255, 0.2)",
     marginVertical: 100,
-    marginHorizontal: 20,
+    marginHorizontal: 30,
     borderRadius: 25,
     borderWidth: 2,
-    borderColor: "white"
+    borderColor: "white",
+    
   },
-  title: { 
+  title: {
     color: "white",
     marginVertical: 10,
     fontSize: 15,
     fontWeight: 'bold',
     textAlign: "center",
-    textTransform: "uppercase", 
+    textTransform: "uppercase",
     textShadowColor: "rgba(0, 0, 0, 0.75)",
     textShadowOffset: { width: -2, height: 2 },
     textShadowRadius: 10,
   },
   imageContainer: {
     alignItems: "center",
+    marginBottom: 20
+  
     
   },
   icon: {
-    width: 270, 
+    width: 270,
     height: 170,
-    borderRadius: 20
+    borderRadius: 20,
   },
+  
   input: {
     height: 40,
     borderColor: 'black',
@@ -230,7 +263,7 @@ const styles = StyleSheet.create({
     marginTop:10
   },
   spacer: {
-    height: 70
+    height: '30%'
   },
   
     
