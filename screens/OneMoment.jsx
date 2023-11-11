@@ -1,9 +1,14 @@
-import { ImageBackground, StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
+import { ImageBackground, StyleSheet, Text, View, Image, TouchableOpacity,Dimensions } from 'react-native';
 import React from 'react';
 import sunset from "../assets/sunset-back.jpg";
 import aiImage from "../assets/ai-image.jpeg";
+import { useNavigation } from '@react-navigation/native';
 
 const OneMoment = () => {
+  const navigation = useNavigation();
+  const RoutinePage = () => {
+    navigation.navigate('RoutinePage')
+  }
 
   const RoundedButton = ({ title, onPress, color }) => {
     return (
@@ -31,15 +36,17 @@ const OneMoment = () => {
               <Image source={aiImage} style={styles.icon} />
             </View>
             <Text style={styles.OneMomentText}>
-              Hey amico! Sappiamo che fornire tutti questi dati può sembrare noioso, ma è come se ci stessi dando superpoteri per rendere la tua giornata fantastica! Ci mancano solo alcuni dettagli per personalizzare al massimo la tua esperienza. Aiutaci a darti il massimo supporto possibile.
+            Hey amico! Sappiamo che fornire tutti questi dati può sembrare noioso,Stiamo migliorando la tua giornata grazie alla nostra intelligenza artificiale. Ci servono solo pochi dettagli sulla tua routine (lavoro, scuola o faccende personali) per personalizzare al meglio l'esperienza.
             </Text>
-            <RoundedButton title="Continua" color="coral" />
+            <RoundedButton title="Continua" color="coral" onPress={RoutinePage} />
           </View>
         </View>
       </ImageBackground>
     </View>
   );
 };
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
   container: {
@@ -73,16 +80,16 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   icon: {
-    width: 270,
-    height: 170,
+    width: windowWidth *0.7,
+    height: windowHeight *0.25,
     borderRadius: 15,
   },
   button: {
     borderRadius: 25,
     paddingVertical: 10,
     paddingHorizontal: 20,
-    marginVertical: 20,
-    width: 140,
+    marginVertical: windowHeight* 0.001,
+    width: windowWidth* 0.4,
   },
   buttonText: {
     color: 'white',

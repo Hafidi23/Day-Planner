@@ -14,12 +14,13 @@ const GoalScreen = () => {
   const [timePerDay, setTimePerDay] = useState('');
   const [timeOfDay, setTimeOfDay] = useState('morning');
   const [currentField, setCurrentField] = useState('goal'); 
-  const windowDimension = Dimensions.get('screen');
+  const windowDimension = Dimensions.get('window');
   const [inputAnimation] = useState(new Animated.ValueXY({ x: 0, y: 0 }));
   const [title, setTitle] = useState("Qui devi inserire l'obbiettivo che vuoi raggiungere")
   const [currentImage, setCurrentImage]= useState(goals)
   const navigation = useNavigation();
-
+  
+ 
   const handleTransition = (nextField, direction) => {
     const destination = direction === 'forward' ? -Dimensions.get('window').width : Dimensions.get('window').width;
 
@@ -192,20 +193,23 @@ const handleGoBack = () => {
       
   );
 };
-
+ const windowWidth = Dimensions.get('window').width;
+  const windowHeight = Dimensions.get('window').height;
 const styles = StyleSheet.create({
+ 
+
+   
   container: {
     flex: 1,
     padding: 10,
-    justifyContent: "center",
-    marginBottom: 30,
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    marginVertical: 100,
-    marginHorizontal: 30,
-    borderRadius: 25,
+    justifyContent: 'center',
+    marginBottom: windowHeight * 0.05,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    marginVertical: windowHeight * 0.001,
+    marginHorizontal: windowWidth * 0.1,
+    borderRadius: windowWidth * 0.05,
     borderWidth: 2,
-    borderColor: "white",
-    
+    borderColor: 'white',
   },
   title: {
     color: "white",
@@ -220,13 +224,13 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     alignItems: "center",
-    marginBottom: 20
+    
   
     
   },
   icon: {
-    width: 270,
-    height: 170,
+    width: windowWidth *0.7,
+    height: windowHeight *0.25,
     borderRadius: 20,
   },
   
@@ -241,12 +245,12 @@ const styles = StyleSheet.create({
     
   },
   button: {
-    borderRadius: 25,
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    margin: 5,
-    width: "50%",
-    marginLeft: 75
+    borderRadius: windowWidth * 0.05,
+    paddingVertical: windowHeight * 0.02,
+    paddingHorizontal: windowWidth * 0.05,
+    margin: windowWidth * 0.01,
+    width: '50%',
+    marginLeft: windowWidth * 0.2,
   },
   buttonText: {
     color: 'white',
