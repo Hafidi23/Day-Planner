@@ -34,7 +34,7 @@ const GoalScreen = () => {
   };
 
   const handleGoHome = () => {
-    navigation.navigate('TabNavigator');
+    navigation.navigate('OneMoment');
   };
 
 const RoundedButton = ({ title, onPress, color }) => {

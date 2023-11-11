@@ -7,6 +7,7 @@ import LoginPage from "./screens/LoginPage";
 import SignupPage from "./screens/SignupPage";
 import IntroductionScreen from "./screens/IntroductionScreen";
 import GoalScreen from "./screens/GoalScreen";
+import OneMoment from "./screens/OneMoment";
 
 const Stack = createNativeStackNavigator();
 
@@ -17,6 +18,7 @@ export default function App() {
         <Stack.Screen name="Introduction" component={IntroductionScreen} />
 
         <Stack.Screen name="Goal" component={GoalScreen} />
+        <Stack.Screen name="OneMoment" component={OneMoment} />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
