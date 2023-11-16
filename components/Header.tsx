@@ -2,13 +2,13 @@ import { StyleSheet, Text, View } from "react-native";
 
 export default function Header() {
   return (
-    <View>
+    <View style={styles.container}>
       <View style={styles.lineStyle}>
         <View
           style={{
             flex: 1,
             height: 1,
-            backgroundColor: "rgba(76, 175, 80, 0.3)",
+            backgroundColor: "coral",
           }}
         />
         <View>
@@ -20,7 +20,7 @@ export default function Header() {
           style={{
             flex: 1,
             height: 1,
-            backgroundColor: "rgba(76, 175, 80, 0.3)",
+            backgroundColor: "coral",
           }}
         />
       </View>
@@ -31,14 +31,18 @@ export default function Header() {
 const styles = StyleSheet.create({
   title: {
     marginTop: -20,
-    color: "black",
+    color: "white",
     fontSize: 38,
     fontWeight: "800",
-    paddingHorizontal: 30,
+    paddingHorizontal: 10,
   },
   lineStyle: {
     flexDirection: "row",
-    marginTop: 30,
+    marginTop: 20,
     alignItems: "center",
+  },
+  container: {
+    backgroundColor: "black",
+    height: 60,
   },
 });

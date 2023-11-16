@@ -67,7 +67,7 @@ export default function AddTodo({ submitHandler }) {
               )}
               <Picker
                 selectedValue={selectedTimeOfDay}
-                onValueChange={(itemValue) => setSelectedTimeOfDay}
+                onValueChange={(itemValue) => setSelectedTimeOfDay(itemValue)}
                 style={styles.picker}
               >
                 <Picker.Item label='Morning' value={"morning"} />
@@ -92,13 +92,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   plusButton: {
+    borderColor: "white",
     alignItems: "center",
     borderStyle: "dashed",
-    borderWidth: 1,
+    justifyContent: "center",
+    borderWidth: 2,
     borderRadius: 4,
-    width: 40,
-    height: 40,
-    marginTop: 10
+    width: 60,
+    height: 55,
+    marginTop: 20
   },
   picker: {
     height: 50,
@@ -139,6 +141,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 14,
     marginTop: 8,
+    marginBottom: 10
   },
   plusButtonContainer: {
     alignItems: "center",
