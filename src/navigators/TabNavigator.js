@@ -26,7 +26,7 @@ const TabNavigator = () => {
             <Icon
               name="home"
               size={size}
-              color={focused ? "coral" : "black"}
+              color={focused ? "coral" : "grey"}
             />
           ),
         }}
@@ -39,7 +39,7 @@ const TabNavigator = () => {
             <Icon
               name="reddit-alien"
               size={size}
-              color={focused ? "coral" : "black"}
+              color={focused ? "coral" : "grey"}
             />
           ),
         }}
@@ -51,9 +51,7 @@ const TabNavigator = () => {
 const styles = StyleSheet.create({
   tabBarStyle: {
     height: 50,
-    position: "absolute",
-    backgroundColor: "grey",
-    borderTopWidth: 0,
+    backgroundColor: "black",
     elevation: 0,
   },
   BlurViewStyle: {

@@ -14,27 +14,6 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen
-          name="Introduction"
-          component={IntroductionScreen}
-          options={{ animation: "flip" }}
-        />
-
-        <Stack.Screen
-          name="Goal"
-          component={GoalScreen}
-          options={{ animation: "slide_from_right" }}
-        />
-        <Stack.Screen
-          name="OneMoment"
-          component={OneMoment}
-          options={{ animation: "slide_from_bottom" }}
-        />
-        <Stack.Screen
-          name="RoutinePage"
-          component={RoutineScreen}
-          options={{ animation: "slide_from_bottom" }}
-        />
         <Stack.Screen name="TabNavigator" component={TabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>

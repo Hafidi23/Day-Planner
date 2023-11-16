@@ -62,7 +62,6 @@ import * as Yup from 'yup';
         </TouchableOpacity>
       </View>
 
-      {/* Username or Email input Field*/}
  
       <View style={styles.buttonStyle}>
         <View style={styles.emailInput}>
@@ -91,7 +90,6 @@ import * as Yup from 'yup';
 
       </View>
 
-      {/* Password Input Field*/}
 
       <View style={styles.buttonStyle1}>
         <View style={styles.emailInput}>
@@ -119,7 +117,6 @@ import * as Yup from 'yup';
         </View>
       </View>
 
-      {/*Button*/}
 
       <View style={styles.buttonStyle}>
         <Button style={styles.buttonDesign}
@@ -129,7 +126,6 @@ import * as Yup from 'yup';
         </Button>
       </View>
 
-      {/* Line */}
 
       <View style={styles.lineStyle}>
         <View style={{ flex: 1, height: 1, backgroundColor: 'black' }} />
@@ -139,7 +135,6 @@ import * as Yup from 'yup';
         <View style={{flex:1, height:1, backgroundColor:'black'}} />
       </View>
 
-      {/* Box */}
       <View style={styles.boxStyle}>
         <Box
           onPress={() => navigation.navigate('#')}

@@ -26,7 +26,7 @@ const SignupPage = () => {
 
         </TouchableOpacity>
       </View>
-      {/* Username */}
+     
       <View style={styles.buttonStyle}>
         <View style={styles.emailInput}>
           <Input
@@ -46,7 +46,7 @@ const SignupPage = () => {
         </View>
 
       </View>
-        {/* Email Field */}
+     
         <View style={styles.buttonStyle}>
         <View style={styles.emailInput}>
           <Input
@@ -66,7 +66,7 @@ const SignupPage = () => {
         </View>
 
       </View>
-        {/* Password */}
+
         <View style={styles.buttonStyle}>
         <View style={styles.emailInput}>
           <Input
@@ -87,7 +87,7 @@ const SignupPage = () => {
         </View>
 
       </View>
-        {/* repeat Password*/}
+  
         <View style={styles.buttonStyle}>
         <View style={styles.emailInput}>
           <Input
@@ -109,7 +109,6 @@ const SignupPage = () => {
 
       </View>
 
-      {/* Button */}
       
       <View style={styles.buttonStylex}>
         <Button style={styles.buttonDesign}>
@@ -124,8 +123,6 @@ const SignupPage = () => {
         </View>
         <View style={{flex:1, height:1,backgroundColor:'black'}} />
       </View>
-
-      {/* Box */}
       
       <View style={styles.boxStyle}>
         <Box

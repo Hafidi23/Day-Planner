@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, FlatList, StyleSheet, View, TouchableWithoutFeedback, Keyboard } from "react-native";
+import { ScrollView, FlatList, StyleSheet, View, TouchableWithoutFeedback, Keyboard,Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import TodoItem from "../components/TodoItem";
@@ -8,11 +8,20 @@ import { useNavigation } from "@react-navigation/native";
 import ChatPage from "./ChatPage";
 
 export default function HomeScreen() {
-  const [todos, setTodos] = useState([
-    { text: "buy coffee", key: "1" },
-    { text: "create an app", key: "2" },
-    { text: "play on the switch", key: "3" },
-  ]);
+  const [todos, setTodos] = useState({
+    morning: [
+      { text: "buy coffee", key: "1" },
+      // ... altri TodoItem della mattina
+    ],
+    afternoon: [
+      { text: "create an app", key: "2" },
+      // ... altri TodoItem del pomeriggio
+    ],
+    evening: [
+      { text: "play on the switch", key: "3" },
+      // ... altri TodoItem della sera
+    ],
+  });
   const navigation = useNavigation();
   
 
@@ -23,39 +32,66 @@ export default function HomeScreen() {
     });
   };
 
-  const submitHandler = (text) => {
-    setTodos((prevTodos) => [
-      { text: text, key: Math.random().toString() },
-      ...prevTodos,
-    ]);
+  const submitHandler = ({ text, time, selectedTimeOfDay }) => {
+    setTodos((prevTodos) => {
+      return {
+        ...prevTodos,
+        [selectedTimeOfDay]: [
+          { text, time, key: Math.random().toString() },
+          ...prevTodos[selectedTimeOfDay],
+        ],
+      };
+    });
   };
 
-  return (  
+  return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <TouchableWithoutFeedback onPress={() => {
-          Keyboard.dismiss();
-        }}>
+      <ScrollView>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={styles.content}>
             <Header />
             <View style={styles.Add}>
-            <AddTodo submitHandler={submitHandler} />
+              <AddTodo submitHandler={submitHandler} />
             </View>
           </View>
         </TouchableWithoutFeedback>
+  
+        {/* Lista della mattina */}
         <FlatList
-          data={todos}
+          data={todos.morning}
           renderItem={({ item }) => (
             <TodoItem item={item} pressHandler={pressHandler} />
           )}
           style={styles.list}
+          ListHeaderComponent={<Text style={styles.listHeader}>Morning</Text>}
         />
-        <View style={styles.containerButton}>
-        
-        </View>
+  
+        {/* Lista del pomeriggio */}
+        <FlatList
+          data={todos.afternoon}
+          renderItem={({ item }) => (
+            <TodoItem item={item} pressHandler={pressHandler} />
+          )}
+          style={styles.list}
+          ListHeaderComponent={<Text style={styles.listHeader}>Afternoon</Text>}
+        />
+  
+        {/* Lista della sera */}
+        <FlatList
+          data={todos.evening}
+          renderItem={({ item }) => (
+            <TodoItem item={item} pressHandler={pressHandler} />
+          )}
+          style={styles.list}
+          ListHeaderComponent={<Text style={styles.listHeader}>Evening</Text>}
+        />
+        </ScrollView>
       </View>
     </SafeAreaView>
+ 
   );
+  
 } 
 
 const styles = StyleSheet.create({
@@ -67,5 +103,13 @@ const styles = StyleSheet.create({
   },
   list: {
     marginTop: 20,
+  },
+  listHeader: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 8,
+    marginTop: 16,
+   
+    textAlign: "center"
   },
 });

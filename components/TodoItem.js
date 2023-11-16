@@ -1,19 +1,22 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SwipeListView } from "react-native-swipe-list-view";
 
-export default function Todoitem({ item, pressHandler }) {
+export default function TodoItem({ item, pressHandler }) {
   return (
     <SwipeListView
       data={[item]}
       keyExtractor={(item) => item.key}
-      leftOpenValue={75}  
+      leftOpenValue={75}
       previewRowKey={item.key}
-      previewOpenValue={75}  
+      previewOpenValue={75}
       renderItem={(rowData, rowMap) => (
         <View style={styles.item}>
           <Text style={styles.itemText}>{item.text}</Text>
+          {item.time && (
+            <Text style={styles.timeText}>{item.time.toLocaleTimeString()}</Text>
+          )}
         </View>
       )}
       renderHiddenItem={(rowData, rowMap) => (
@@ -23,25 +26,27 @@ export default function Todoitem({ item, pressHandler }) {
           </TouchableOpacity>
         </View>
       )}
-
     />
-    
   );
 }
 
 const styles = StyleSheet.create({
   item: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     padding: 15,
     borderRadius: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     marginBottom: 20,
   },
   itemText: {
     marginLeft: 10,
-    fontSize:20
+    fontSize: 20,
+  },
+  timeText: {
+    fontSize: 14,
+    color: "#888", // Colore grigio per l'ora del giorno
   },
   deleteContainer: {
     backgroundColor: "red",
@@ -49,6 +54,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: 75,
     height: 55,
-    borderRadius: 10
+    borderRadius: 10,
   },
 });
