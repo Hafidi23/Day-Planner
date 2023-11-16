@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useState,} from "react";
+import { StyleSheet, Text, View, TouchableOpacity, TextInput } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SwipeListView } from "react-native-swipe-list-view";
 
-export default function TodoItem({ item, pressHandler }) {
+export default function TodoItem  ({ item, pressHandler }) {
   const [expanded, setExpanded] = useState(false);
+  const [editedText, setEditedText] = useState(item.text);
 
   const handlePress = () => {
     setExpanded(!expanded);
+  };
+
+  const saveChanges = () => {
+    console.log("Testo modificato:", editedText);
+    setExpanded(false);
   };
 
   return (
@@ -21,22 +27,37 @@ export default function TodoItem({ item, pressHandler }) {
         <TouchableOpacity activeOpacity={1} onPress={handlePress}>
           <View style={[styles.item, { height: expanded ? 150 : 70 }]}>
             <View style={styles.itemTextView}>
-              <Text style={styles.itemText}>
-                {expanded ? item.text : (item.text.length > 30 ? `${item.text.substring(0, 30)}...` : item.text)}
-              </Text>
+              {expanded ? (
+                <TextInput
+                  style={styles.editInput}
+                  value={editedText}
+                  onChangeText={setEditedText}
+                />
+              ) : (
+                <Text style={styles.itemText}>
+                  {item.text.length > 30
+                    ? `${item.text.substring(0, 30)}...`
+                    : item.text}
+                </Text>
+              )}
             </View>
             <View style={styles.containerIcon}>
               {expanded && (
-                <TouchableOpacity>
-                  <MaterialIcons name="edit" size={30} color="white" style={styles.icon} />
-                  </TouchableOpacity>
-            )}
-            {item.time && (
-              <Text style={styles.timeText}>
-                {item.time.toLocaleTimeString()}
-              </Text>
+                <TouchableOpacity onPress={saveChanges}>
+                  <MaterialIcons name="done" size={30} color="white" style={styles.icon} />
+                </TouchableOpacity>
               )}
-              </View>
+              {!expanded && (
+                <TouchableOpacity onPress={handlePress}>
+                  <MaterialIcons name="edit" size={30} color="white" style={styles.icon} />
+                </TouchableOpacity>
+              )}
+              {item.time && (
+                <Text style={styles.timeText}>
+                  {item.time.toLocaleTimeString()}
+                </Text>
+              )}
+            </View>
           </View>
         </TouchableOpacity>
       )}
@@ -49,10 +70,6 @@ export default function TodoItem({ item, pressHandler }) {
       )}
     />
   );
-  
-  
-  
-  
 }
 
 const styles = StyleSheet.create({
@@ -67,28 +84,26 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   itemTextView: {
-   
-  
+    flex: 1,
   },
   containerIcon: {
-    flexDirection: "column"
+    flexDirection: "row",
+    alignItems: "center",
   },
   icon: {
+    marginLeft: 10,
     marginRight: 10,
-    marginBottom:10
   },
   itemText: {
-    flex:1,
+    flex: 1,
     marginLeft: 10,
     fontSize: 18,
     color: "white",
     textAlignVertical: "top",
-    
   },
   timeText: {
     fontSize: 10,
     color: "#F0F7F4",
-    marginTop:20
   },
   deleteContainer: {
     backgroundColor: "red",
@@ -98,5 +113,12 @@ const styles = StyleSheet.create({
     height: 70,
     borderRadius: 10,
     marginLeft: 10,
+  },
+  editInput: {
+    flex: 1,
+    marginLeft: 10,
+    fontSize: 18,
+    color: "white",
+    textAlignVertical: "top",
   },
 });

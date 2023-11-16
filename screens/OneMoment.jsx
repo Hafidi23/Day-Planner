@@ -1,6 +1,6 @@
 import { ImageBackground, StyleSheet, Text, View, Image, TouchableOpacity,Dimensions } from 'react-native';
 import React from 'react';
-import sunset from "../assets/sunset-back.jpg";
+import sunset from "../assets/background-1.jpg";
 import aiImage from "../assets/ai-image.jpeg";
 import { useNavigation } from '@react-navigation/native';
 

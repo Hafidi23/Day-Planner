@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ImageBackground, Dimensions,TouchableOpacity,KeyboardAvoidingView, Image, Animated } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import background from '../assets/background.jpg'
+import background from '../assets/background-1.jpg'
 import goals from '../assets/goals.jpg'
 import day from '../assets/day1.jpg'
 import time from '../assets/time.jpg'
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     marginBottom: windowHeight * 0.05,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     marginVertical: windowHeight * 0.001,
     marginHorizontal: windowWidth * 0.1,
     borderRadius: windowWidth * 0.05,

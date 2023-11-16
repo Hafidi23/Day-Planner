@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, KeyboardAvoidingView, Image, Animated, Button } from 'react-native';
-import background from '../assets/sunset-back.jpg';
+import background from '../assets/background-1.jpg';
 import routine from '../assets/routine.png';
 import time from '../assets/time.jpg'
 import { useNavigation } from '@react-navigation/native';
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     marginBottom: windowHeight * 0.05,
-    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
     marginVertical: windowHeight * 0.001,
     marginHorizontal: windowWidth * 0.1,
     borderRadius: windowWidth * 0.05,

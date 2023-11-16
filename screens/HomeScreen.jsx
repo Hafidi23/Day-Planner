@@ -16,6 +16,7 @@ import AddTodo from "../components/AddTodo";
 import { useNavigation } from "@react-navigation/native";
 import ChatPage from "./ChatPage";
 import background from "../assets/background-1.jpg"
+import AddGoal from "../components/AddGoal";
 
 export default function HomeScreen() {
   const [todos, setTodos] = useState({
@@ -77,7 +78,9 @@ export default function HomeScreen() {
           >
           <Header />
           <View style={styles.Add}>
-            <AddTodo submitHandler={submitHandler} />
+              <AddTodo submitHandler={submitHandler} />
+              <AddGoal/>
+              
           </View>
           <FlatList
             data={data}
@@ -109,13 +112,16 @@ const styles = StyleSheet.create({
   
   },
   Add: {
-    alignItems:"center"
+    alignItems: "center",
+    flexDirection: "row",
+    justifyContent: "center",
+    marginLeft: 21
   },
   list: {
     marginTop: 20,
   },
   listHeader: {
-    color: "coral",
+    color: "#FF8800",
     fontSize: 23,
     fontWeight: 'bold',
     textAlign: "center",
