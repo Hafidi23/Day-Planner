@@ -84,5 +84,9 @@ const styles = StyleSheet.create({
   arrow: {
     position: 'absolute',
   },
-  textButton: {color: 'white', fontSize: 16, position: 'absolute'},
+  textButton: {
+    color: 'white',
+    fontSize: 16,
+    position: 'absolute'
+  },
 });

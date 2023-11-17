@@ -30,7 +30,7 @@ export default function Header() {
 
 const styles = StyleSheet.create({
   title: {
-    marginTop: -20,
+    marginTop: -10,
     color: "white",
     fontSize: 38,
     fontWeight: "800",
@@ -44,5 +44,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "black",
     height: 60,
+    marginVertical: 10,
   },
 });
