@@ -18,13 +18,41 @@ import Animated, {
   withSequence,
   withSpring
 } from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
+import * as Yup from "yup"
 
 export default function LoginPage() {
+  const navigation = useNavigation();
   const { height, width } = Dimensions.get("window");
   const imagePosition = useSharedValue(1);
   const formButtonScale = useSharedValue(1);
   const [isRegistering, setIsRegistering] = useState(false);
-
+  const [formValues, setFormValues] = useState({ email: '', password: '' });
+  const [errors, setErrors] = useState({});
+  
+ 
+    
+    const validationSchema = Yup.object().shape({
+        email: Yup.string()
+            .email('Inserisci un indirizzo email valido')
+            .required('L\'email è obbligatoria'),
+        password: Yup.string()
+        .required('La password è obbligatoria')
+    })
+    const handleSubmit = async () => {
+        try {
+          await validationSchema.validate(formValues, { abortEarly: false });
+          if (!isRegistering) {
+            goToGoal();
+          }
+        } catch (error) {
+            const validationErrors = {};
+            error.inner.forEach((e) => {
+                validationErrors[e.path] = e.message;
+            })
+          setErrors(validationErrors);
+        }
+      };
   const imageAnimatedStyle = useAnimatedStyle(() => {
     const interpolation = interpolate(
       imagePosition.value,
@@ -37,7 +65,7 @@ export default function LoginPage() {
       ],
     };
   });
-
+  
   const buttonsAnimatedStyle = useAnimatedStyle(() => {
     const interpolation = interpolate(imagePosition.value, [0, 1], [250, 0]);
     return {
@@ -72,12 +100,15 @@ export default function LoginPage() {
       transform: [{scale: formButtonScale.value}]
     }
   })
-
+  const goToGoal = () => {
+    navigation.navigate('Goal');
+    };
   const loginHandler = () => {
     imagePosition.value = 0;
     if (isRegistering) {
       runOnJS(setIsRegistering)(false);
     }
+    
   };
 
   const registerHandler = () => {
@@ -95,8 +126,8 @@ export default function LoginPage() {
             <Ellipse cx={width / 2} rx={height} ry={height + 100} />
           </ClipPath>
           <Image
-            href={require("../assets/login-background.jpg")}
-            width={width + 100}
+            href={require("../assets/background.jpg")}
+            width={width }
             height={height + 100}
             preserveAspectRatio="xMidYMid slice"
             clipPath="url(#clipPathId)"
@@ -120,11 +151,16 @@ export default function LoginPage() {
           </Pressable>
         </Animated.View>
         <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
-          <TextInput
+        <TextInput
             placeholder="Email"
             placeholderTextColor="black"
+            onChangeText={(text) => {
+              setFormValues({ ...formValues, email: text });
+              setErrors({ ...errors, email: undefined });
+            }}
             style={styles.textInput}
           />
+          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
           {isRegistering && (
             <TextInput
               placeholder="Full Name"
@@ -135,10 +171,16 @@ export default function LoginPage() {
           <TextInput
             placeholder="Password"
             placeholderTextColor="black"
+            secureTextEntry={true}
+            onChangeText={(text) => {
+                setFormValues({ ...formValues, password: text })
+                setErrors({ ...errors, password: undefined})
+                      }}          
             style={styles.textInput}
-          />
+             />
+           {errors.password && <Text style={styles.errorText}>{errors.password}</Text>}
           <Animated.View style={[styles.formButton, formButtonAnimatedStyle]}>
-            <Pressable onPress={() => formButtonScale.value = withSequence(withSpring(1.5), withSpring(1))}>
+                      <Pressable onPress={() => { formButtonScale.value = withSequence(withSpring(1.5), withSpring(1)); handleSubmit(); }}>
               <Text style={styles.buttonText}>
                 {isRegistering ? "REGISTER" : "LOG IN"}
               </Text>
@@ -227,7 +269,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 20,
         top: -20
+    },
+    errorText: {
+        color: 'red',
+        fontSize:14,
+        marginLeft: width * 0.1,
+        marginTop: 0
       }
+
 
 
 })
