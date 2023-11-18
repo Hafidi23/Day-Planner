@@ -105,12 +105,13 @@ const RoutineScreen = () => {
             },
           ]}
         >
-          <View style={styles.imageContainer}>
-            <Image source={currentImage} style={styles.icon} />
-          </View>
           <Text style={styles.title}>
             {title}
           </Text>
+          <View style={styles.imageContainer}>
+            <Image source={currentImage} style={styles.icon} />
+          </View>
+          
           {currentField === 'activity' && (
             <TextInput
               style={styles.input}
@@ -163,7 +164,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "white",
-    marginVertical: 10,
+    marginBottom: 20,
     fontSize: 15,
     fontWeight: 'bold',
     textAlign: "center",
@@ -179,15 +180,16 @@ const styles = StyleSheet.create({
     
   },
   icon: {
-    width: windowWidth *0.7,
+    width: windowWidth *0.6,
     height: windowHeight *0.25,
     borderRadius: 20,
+    marginBottom:20
   },
   
   input: {
     height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
+    borderColor: 'coral',
+    borderWidth: 3,
     marginBottom: 10,
     paddingHorizontal: 10,
     backgroundColor: 'rgba(255, 255, 255, 1)',
@@ -210,7 +212,7 @@ const styles = StyleSheet.create({
     marginTop:10
   },
   spacer: {
-    height: '30%'
+    height: '25%'
   },
   
 });

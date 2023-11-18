@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ImageBackground, Dimensions,TouchableOpacity,KeyboardAvoidingView, Image, Animated } from 'react-native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Image,
+  Animated,
+} from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import background from '../assets/background-1.jpg'
-import goals from '../assets/goals.jpg'
-import day from '../assets/day1.jpg'
-import time from '../assets/time.jpg'
-import count from '../assets/count.png'
+import background from '../assets/background-1.jpg';
+import goals from '../assets/goals.jpg';
+import day from '../assets/day1.jpg';
+import time from '../assets/time.jpg';
+import count from '../assets/count.png';
 import { useNavigation } from '@react-navigation/native';
 
 const GoalScreen = () => {
@@ -13,14 +24,15 @@ const GoalScreen = () => {
   const [deadline, setDeadline] = useState('');
   const [timePerDay, setTimePerDay] = useState('');
   const [timeOfDay, setTimeOfDay] = useState('morning');
-  const [currentField, setCurrentField] = useState('goal'); 
+  const [currentField, setCurrentField] = useState('goal');
   const windowDimension = Dimensions.get('window');
   const [inputAnimation] = useState(new Animated.ValueXY({ x: 0, y: 0 }));
-  const [title, setTitle] = useState("Qui devi inserire l'obbiettivo che vuoi raggiungere")
-  const [currentImage, setCurrentImage]= useState(goals)
+  const [title, setTitle] = useState(
+    "Qui devi inserire l'obbiettivo che vuoi raggiungere"
+  );
+  const [currentImage, setCurrentImage] = useState(goals);
   const navigation = useNavigation();
-  
- 
+
   const handleTransition = (nextField, direction) => {
     const destination = direction === 'forward' ? -Dimensions.get('window').width : Dimensions.get('window').width;
 
@@ -34,47 +46,44 @@ const GoalScreen = () => {
     });
   };
 
+  const RoundedButton = ({ title, onPress, color }) => {
+    return (
+      <TouchableOpacity style={[styles.button, { backgroundColor: color }]} onPress={onPress}>
+        <Text style={styles.buttonText}>{title}</Text>
+      </TouchableOpacity>
+    );
+  };
+
   const handleGoHome = () => {
     navigation.navigate('OneMoment');
   };
 
-const RoundedButton = ({ title, onPress, color }) => {
-  return (
-    <TouchableOpacity
-      style={[styles.button, { backgroundColor: color }]}
-      onPress={onPress}
-    >
-      <Text style={styles.buttonText}>{title}</Text>
-    </TouchableOpacity>
-  );
-};
-  
-  
-const resetAnimation = () => {
-  inputAnimation.setValue({ x: 0, y: 0 });
-};
-  
-const handleSaveGoal = () => {
-  handleTransition('deadline', 'forward');
-};
+  const resetAnimation = () => {
+    inputAnimation.setValue({ x: 0, y: 0 });
+  };
 
-const handleSaveDeadline = () => {
-  handleTransition('timePerDay', 'forward');
-};
+  const handleSaveGoal = () => {
+    handleTransition('deadline', 'forward');
+  };
 
-const handleSaveTimePerDay = () => {
-  handleTransition('timeOfDay', 'forward');
-};
+  const handleSaveDeadline = () => {
+    handleTransition('timePerDay', 'forward');
+  };
 
-const handleGoBack = () => {
-  if (currentField === 'deadline') {
-    handleTransition('goal', 'backward');
-  } else if (currentField === 'timePerDay') {
-    handleTransition('deadline', 'backward');
-  } else if (currentField === 'timeOfDay') {
-    handleTransition('timePerDay', 'backward');
-  }
-};
+  const handleSaveTimePerDay = () => {
+    handleTransition('timeOfDay', 'forward');
+  };
+
+  const handleGoBack = () => {
+    if (currentField === 'deadline') {
+      handleTransition('goal', 'backward');
+    } else if (currentField === 'timePerDay') {
+      handleTransition('deadline', 'backward');
+    } else if (currentField === 'timeOfDay') {
+      handleTransition('timePerDay', 'backward');
+    }
+  };
+
   useEffect(() => {
     if (currentField === 'goal') {
       setTitle("Qui devi inserire l'obbiettivo che vuoi raggiungere");
@@ -86,6 +95,7 @@ const handleGoBack = () => {
       setTitle("Seleziona il momento del giorno in cui preferisci dedicarti");
     }
   }, [currentField]);
+
   useEffect(() => {
     if (currentField === 'goal') {
       setCurrentImage(goals);
@@ -96,40 +106,33 @@ const handleGoBack = () => {
     } else if (currentField === 'timeOfDay') {
       setCurrentImage(day);
     }
-  }, [currentField]); 
-  
+  }, [currentField]);
 
   return (
-    
     <ImageBackground
       style={{
-        resizeMode:"cover",
+        resizeMode: 'cover',
         flex: 1,
       }}
       source={background}
     >
-      <KeyboardAvoidingView
-      style={{ flex: 1 }}
-      behavior="padding"
-      >
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <View style={styles.spacer}></View>
         <Animated.View
-        style={[
-          styles.container,
-          {
-            transform: [
-              { translateX: inputAnimation.x },
-              { translateY: inputAnimation.y },
-            ],
-          },
-        ]}
-      >
-        <View style={styles.imageContainer}>
-          <Image source={currentImage} style={styles.icon} />
-        </View>
-          <Text style={styles.title}>
-            {title}
-          </Text>
+          style={[
+            styles.container,
+            {
+              transform: [
+                { translateX: inputAnimation.x },
+                { translateY: inputAnimation.y },
+              ],
+            },
+          ]}
+        >
+           <Text style={styles.title}>{title}</Text>
+          <View style={styles.imageContainer}>
+            <Image source={currentImage} style={styles.icon} />
+          </View>
           {currentField === 'goal' && (
             <TextInput
               style={styles.input}
@@ -156,10 +159,10 @@ const handleGoBack = () => {
               onChangeText={(text) => setTimePerDay(text)}
               keyboardType="numeric"
               onFocus={resetAnimation}
-              
             />
           )}
           {currentField === 'timeOfDay' && (
+            
             <Picker
               selectedValue={timeOfDay}
               onValueChange={(value) => setTimeOfDay(value)}
@@ -168,29 +171,48 @@ const handleGoBack = () => {
               <Picker.Item label="Mattina" value="morning" />
               <Picker.Item label="Pomeriggio" value="afternoon" />
               <Picker.Item label="Sera" value="evening" />
-            </Picker>
+              </Picker>
           )}
           {currentField === 'goal' && (
-            <RoundedButton title="Salva" onPress={handleSaveGoal} color="coral" />
+            <RoundedButton
+              title="Salva"
+              onPress={handleSaveGoal}
+              color="coral"
+            />
           )}
           {currentField === 'deadline' && (
-            <RoundedButton title="Salva" onPress={handleSaveDeadline} color="coral" />
+            <RoundedButton
+              title="Salva"
+              onPress={handleSaveDeadline}
+              color="coral"
+            />
           )}
           {currentField === 'timePerDay' && (
-            <RoundedButton title="Salva" onPress={handleSaveTimePerDay} color="coral" />
+            <RoundedButton
+              title="Salva"
+              onPress={handleSaveTimePerDay}
+              color="coral"
+            />
           )}
           {currentField === 'timeOfDay' && (
-            <RoundedButton title="Continua" onPress={handleGoHome} color="coral" />
+            <RoundedButton
+              title="Continua"
+              onPress={handleGoHome}
+              color="coral"
+            />
           )}
           <View style={styles.back}>
-              {currentField !== 'goal' && (
-                <RoundedButton title="Indietro" onPress={() => handleGoBack()} color="coral" />
-              )}
-            </View>
+            {currentField !== 'goal' && (
+              <RoundedButton
+                title="Indietro"
+                onPress={() => handleGoBack()}
+                color="coral"
+              />
+            )}
+          </View>
         </Animated.View>
       </KeyboardAvoidingView>
-      </ImageBackground>
-      
+    </ImageBackground>
   );
 };
  const windowWidth = Dimensions.get('window').width;
@@ -203,9 +225,10 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 10,
     justifyContent: 'center',
+    alignItems:"center",
     marginBottom: windowHeight * 0.05,
     backgroundColor: 'rgba(255, 255, 255, 0.5)',
-    marginVertical: windowHeight * 0.001,
+    marginVertical: windowHeight * 0.01,
     marginHorizontal: windowWidth * 0.1,
     borderRadius: windowWidth * 0.05,
     borderWidth: 2,
@@ -229,19 +252,21 @@ const styles = StyleSheet.create({
     
   },
   icon: {
-    width: windowWidth *0.7,
+    width: windowWidth *0.6,
     height: windowHeight *0.25,
     borderRadius: 20,
+    marginBottom: 10
   },
   
   input: {
     height: 40,
-    borderColor: 'black',
-    borderWidth: 1,
+    borderColor: 'coral',
+    borderWidth: 3,
     marginBottom: 10,
     paddingHorizontal: 10,
     backgroundColor: 'rgba(255, 255, 255, 1)',
-    borderRadius: 20
+    borderRadius: 20,
+    width:"100%"
     
   },
   button: {
@@ -250,24 +275,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: windowWidth * 0.05,
     margin: windowWidth * 0.01,
     width: '50%',
-    marginLeft: windowWidth * 0.2,
   },
   buttonText: {
     color: 'white',
     textAlign: "center"
   },
   picker: {
-    height: 40,
     marginBottom: 10,
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    borderRadius: 20
+    backgroundColor: 'coral',
+    width: "80%",
+    color:"white"
   
   },
   back: {
-    marginTop:10
+    width: "100%",
+    alignItems:"center"
+
   },
   spacer: {
-    height: '30%'
+    height: '25%'
   },
   
     

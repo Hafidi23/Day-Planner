@@ -11,6 +11,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
 
 
 const AddButton = ({openModal}) => {
@@ -25,7 +26,10 @@ const AddButton = ({openModal}) => {
   const progress = useDerivedValue(() =>
     isOpen.value ? withTiming(1) : withTiming(0),
   );
-
+  const navigation = useNavigation();
+  const AddGoal = () => {
+    navigation.navigate('Goal')
+  }
   const handlePress = () => {
     const config = {
       easing: Easing.bezier(0.68, -0.6, 0.32, 1.6),
@@ -138,38 +142,40 @@ const AddButton = ({openModal}) => {
        <TouchableOpacity onPress={() => openModal()}>
         <View style={styles.iconContainer}>
           <Image
-            source={require('../assets/PenIcon.png')}
+            source={require('../assets/edit.png')}
             style={styles.icon}
           />
           </View>
           </TouchableOpacity>
         <Animated.Text style={[styles.text, opacityText]}>
-          Edit File
+          New Todo...
           </Animated.Text>
           </Animated.View>
           
       <Animated.View
         style={[styles.contentContainer, secondIcon, secondWidthStyle]}>
+        <TouchableOpacity onPress={AddGoal}>
         <View style={styles.iconContainer}>
           <Image
-            source={require('../assets/FileIcon.png')}
+            source={require('../assets/goal1.png')}
             style={styles.icon}
           />
-        </View>
+          </View>
+          </TouchableOpacity>
         <Animated.Text style={[styles.text, opacityText]}>
-          New File
+          New Goal
         </Animated.Text>
       </Animated.View>
       <Animated.View
         style={[styles.contentContainer, firstIcon, firstWidthStyle]}>
         <View style={styles.iconContainer}>
           <Image
-            source={require('../assets/FolderIcon.png')}
+            source={require('../assets/ai.png')}
             style={styles.icon}
           />
         </View>
         <Animated.Text style={[styles.text, opacityText]}>
-          New Folder
+          Talk to AI
         </Animated.Text>
       </Animated.View>
       <Pressable
@@ -211,8 +217,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   icon: {
-    width: 26,
-    height: 26,
+    width: 30,
+    height: 30,
   },
   text: {
     color: 'white',

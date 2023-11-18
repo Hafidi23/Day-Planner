@@ -9,7 +9,7 @@ import {
   Text,
   ImageBackground,
   Modal,
-  Pressable,
+  SectionList,
   TextInput,
   Button,
   TouchableOpacity
@@ -28,18 +28,9 @@ export default function HomeScreen() {
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [selectedTimeOfDay, setSelectedTimeOfDay] = useState("morning");
   const [todos, setTodos] = useState({
-    morning: [
-      { text: "buy coffee", key: "1" },
-      // ... altri TodoItem della mattina
-    ],
-    afternoon: [
-      { text: "create an app", key: "2" },
-      // ... altri TodoItem del pomeriggio
-    ],
-    evening: [
-      { text: "play on the switch", key: "3" },
-      // ... altri TodoItem della sera
-    ],
+    morning: [],
+    afternoon: [],
+    evening: [],
   });
   const changeHandler = (val) => {
     setText(val);
@@ -93,7 +84,6 @@ export default function HomeScreen() {
     <SafeAreaView style={{ flex: 1 }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
-          
           <ImageBackground
             style={{
               flex: 1,
@@ -102,25 +92,19 @@ export default function HomeScreen() {
             source={background}
           >
               <Header />
-            <FlatList
-              data={data}
-              keyExtractor={(item, index) => index.toString()}
-              renderItem={({ item }) => (
-                <>
-                  <Text style={styles.listHeader}>{item.text}</Text>
-                  <FlatList
-                    data={item.data}
-                    renderItem={({ item }) => (
-                      <TodoItem
-                        item={item}
-                        pressHandler={() => pressHandler(item.key)}
-                      />
-                    )}
-                    keyExtractor={(item) => item.key}
-                  />
-                </>
-              )}
+              <SectionList
+          sections={data}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item }) => (
+            <TodoItem
+              item={item}
+              pressHandler={() => pressHandler(item.key)}
             />
+          )}
+          renderSectionHeader={({ section: { text } }) => (
+            <Text style={styles.listHeader}>{text}</Text>
+          )}
+        />
               <AddButton
                 setAddTodoModalVisible={() => setAddTodoModalVisible(true)}
                 onAddTodo={onAddTodo}

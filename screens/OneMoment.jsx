@@ -7,7 +7,7 @@ import { useNavigation } from '@react-navigation/native';
 const OneMoment = () => {
   const navigation = useNavigation();
   const RoutinePage = () => {
-    navigation.navigate('RoutinePage')
+    navigation.navigate('Routine')
   }
 
   const RoundedButton = ({ title, onPress, color }) => {
