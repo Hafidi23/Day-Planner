@@ -4,9 +4,9 @@ import {
   createBottomTabNavigator,
 } from "@react-navigation/bottom-tabs";
 import HomeScreen from "../../screens/HomeScreen";
-import SettingScreen from "../../screens/SettingPage";
+import SettingScreen from "../../screens/SettingScreen";
 import CustomBottomTab from "../components/CustomBottomTab";
-import ProfileScreen from "../../screens/GoalScreen";
+import ProfileScreen from "../../screens/ProfileScreen";
 import SearchScreen from "../../screens/ChatPage";
 
 export type BottomTabParamList = {

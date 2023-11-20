@@ -7,6 +7,7 @@ import {
   TextInput,
   Pressable,
   ActivityIndicator,
+  KeyboardAvoidingView,
 } from "react-native";
 import Svg, { Image, Ellipse, ClipPath } from "react-native-svg";
 import Animated, {
@@ -21,6 +22,10 @@ import Animated, {
 } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
 import * as Yup from "yup";
+import { initializeAuth, getReactNativePersistence } from "firebase/auth";
+import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import { FirebaseApp } from "firebase/app";
+import { Firebase_DB, addDoc, collection } from "../FirebaseConfig";
 import { Firebase_Auth } from "../FirebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -33,6 +38,7 @@ export default function LoginPage() {
   const formButtonScale = useSharedValue(1);
   const [isRegistering, setIsRegistering] = useState(false);
   const [formValues, setFormValues] = useState({ email: "", password: "" });
+  const [fullName, setFullName] = useState("");
   const [errors, setErrors] = useState({});
 
   const auth = Firebase_Auth;
@@ -103,9 +109,7 @@ export default function LoginPage() {
       transform: [{ scale: formButtonScale.value }],
     };
   });
-  const goToGoal = () => {
-    navigation.navigate("Goal");
-  };
+
   const loginHandler = () => {
     imagePosition.value = 0;
     if (isRegistering) {
@@ -130,6 +134,12 @@ export default function LoginPage() {
           formValues.email,
           formValues.password
         );
+
+        await addDoc(collection(Firebase_DB, "users"), {
+          fullName,
+          email: formValues.email,
+        });
+
         console.log(response);
       } else {
         const response = await signInWithEmailAndPassword(
@@ -138,7 +148,6 @@ export default function LoginPage() {
           formValues.password
         );
         console.log(response);
-        goToGoal();
       }
     } catch (error) {
       console.log(error);
@@ -180,38 +189,43 @@ export default function LoginPage() {
           </Pressable>
         </Animated.View>
         <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
-          <TextInput
-            placeholder="Email"
-            value={formValues.email}
-            placeholderTextColor="black"
-            onChangeText={(text) => {
-              setFormValues({ ...formValues, email: text });
-              setErrors({ ...errors, email: undefined });
-            }}
-            style={styles.textInput}
-          />
-          {errors.email && <Text style={styles.errorText}>{errors.email}</Text>}
-          {isRegistering && (
+          <KeyboardAvoidingView behavior="padding">
             <TextInput
-              placeholder="Full Name"
+              placeholder="Email"
+              value={formValues.email}
               placeholderTextColor="black"
+              onChangeText={(text) => {
+                setFormValues({ ...formValues, email: text });
+                setErrors({ ...errors, email: undefined });
+              }}
               style={styles.textInput}
             />
-          )}
-          <TextInput
-            placeholder="Password"
-            value={formValues.password}
-            placeholderTextColor="black"
-            secureTextEntry={false}
-            onChangeText={(text) => {
-              setFormValues({ ...formValues, password: text });
-              setErrors({ ...errors, password: undefined });
-            }}
-            style={styles.textInput}
-          />
-          {errors.password && (
-            <Text style={styles.errorText}>{errors.password}</Text>
-          )}
+            {errors.email && (
+              <Text style={styles.errorText}>{errors.email}</Text>
+            )}
+            {isRegistering && (
+              <TextInput
+                placeholder="Full Name"
+                placeholderTextColor="black"
+                onChangeText={(text) => setFullName(text)}
+                style={styles.textInput}
+              />
+            )}
+            <TextInput
+              placeholder="Password"
+              value={formValues.password}
+              placeholderTextColor="black"
+              secureTextEntry={true}
+              onChangeText={(text) => {
+                setFormValues({ ...formValues, password: text });
+                setErrors({ ...errors, password: undefined });
+              }}
+              style={styles.textInput}
+            />
+            {errors.password && (
+              <Text style={styles.errorText}>{errors.password}</Text>
+            )}
+          </KeyboardAvoidingView>
           <Animated.View style={[styles.formButton, formButtonAnimatedStyle]}>
             <Pressable
               onPress={() => {

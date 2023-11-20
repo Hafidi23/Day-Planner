@@ -1,12 +1,12 @@
-import {StyleSheet, TouchableWithoutFeedback} from 'react-native';
-import React from 'react';
+import { StyleSheet, TouchableWithoutFeedback } from "react-native";
+import React from "react";
 import Animated, {
   useAnimatedStyle,
   withSpring,
   withTiming,
-} from 'react-native-reanimated';
-import {useNavigation} from '@react-navigation/native';
-const CustomButton = ({flatListRef, flatListIndex, dataLength}) => {
+} from "react-native-reanimated";
+import { useNavigation } from "@react-navigation/native";
+const CustomButton = ({ flatListRef, flatListIndex, dataLength }) => {
   const navigation = useNavigation();
 
   const buttonAnimationStyle = useAnimatedStyle(() => {
@@ -52,17 +52,18 @@ const CustomButton = ({flatListRef, flatListIndex, dataLength}) => {
     <TouchableWithoutFeedback
       onPress={() => {
         if (flatListIndex.value < dataLength - 1) {
-          flatListRef.current.scrollToIndex({index: flatListIndex.value + 1});
+          flatListRef.current.scrollToIndex({ index: flatListIndex.value + 1 });
         } else {
-          navigation.navigate('Login');
+          navigation.navigate("Login");
         }
-      }}>
+      }}
+    >
       <Animated.View style={[styles.container, buttonAnimationStyle]}>
         <Animated.Text style={[styles.textButton, textAnimationStyle]}>
           Get Started
         </Animated.Text>
         <Animated.Image
-          source={require('../assets/ArrowIcon.png')}
+          source={require("../assets/ArrowIcon.png")}
           style={[styles.arrow, arrowAnimationStyle]}
         />
       </Animated.View>
@@ -74,19 +75,19 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'orange',
+    backgroundColor: "orange",
     padding: 10,
     borderRadius: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    overflow: 'hidden',
+    justifyContent: "center",
+    alignItems: "center",
+    overflow: "hidden",
   },
   arrow: {
-    position: 'absolute',
+    position: "absolute",
   },
   textButton: {
-    color: 'white',
+    color: "white",
     fontSize: 16,
-    position: 'absolute'
+    position: "absolute",
   },
 });

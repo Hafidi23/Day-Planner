@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -9,6 +9,9 @@ import {
   Image,
 } from "react-native";
 import FeatherIcon from "react-native-vector-icons/Feather";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
+const auth = getAuth();
 
 const SECTIONS = [
   {
@@ -60,7 +63,23 @@ function SectionRow({ label, value, type, index, onPress }) {
   );
 }
 
-export default function SettingPage() {
+export default function SettingScreen() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
+      if (authUser) {
+        setUser(authUser);
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -83,7 +102,9 @@ export default function SettingPage() {
           <View style={styles.profileBody}>
             <Text style={styles.profileName}>John Doe</Text>
 
-            <Text style={styles.profileHandle}>john.doe@mail.com</Text>
+            <Text style={styles.profileHandle}>
+              {user ? user.email : "Email non disponibile"}
+            </Text>
           </View>
         </View>
       </View>

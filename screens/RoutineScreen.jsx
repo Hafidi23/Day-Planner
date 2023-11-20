@@ -1,22 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, StyleSheet, ImageBackground, Dimensions, TouchableOpacity, KeyboardAvoidingView, Image, Animated, Button } from 'react-native';
-import background from '../assets/background-1.jpg';
-import routine from '../assets/routine.png';
-import time from '../assets/time.jpg'
-import { useNavigation } from '@react-navigation/native';
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  ImageBackground,
+  Dimensions,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Image,
+  Animated,
+  Button,
+} from "react-native";
+import background from "../assets/background-1.jpg";
+import routine from "../assets/routine.png";
+import time from "../assets/time.jpg";
+import { useNavigation } from "@react-navigation/native";
 
 const RoutineScreen = () => {
-  const [activity, setActivity] = useState('');
-  const [duration, setDuration] = useState('');
-  const [currentField, setCurrentField] = useState('activity');
-  const windowDimension = Dimensions.get('screen');
+  const [activity, setActivity] = useState("");
+  const [duration, setDuration] = useState("");
+  const [currentField, setCurrentField] = useState("activity");
+  const windowDimension = Dimensions.get("screen");
   const [inputAnimation] = useState(new Animated.ValueXY({ x: 0, y: 0 }));
   const [title, setTitle] = useState("Inserisci un'attività della tua routine");
   const [currentImage, setCurrentImage] = useState(routine);
   const navigation = useNavigation();
 
   const handleTransition = (nextField, direction) => {
-    const destination = direction === 'forward' ? -Dimensions.get('window').width : Dimensions.get('window').width;
+    const destination =
+      direction === "forward"
+        ? -Dimensions.get("window").width
+        : Dimensions.get("window").width;
 
     Animated.timing(inputAnimation.x, {
       toValue: destination,
@@ -28,15 +43,15 @@ const RoutineScreen = () => {
     });
   };
   const handleGoBack = () => {
-    if (currentField === 'activity') {
-      handleTransition('activity', 'backward');
-    } else if (currentField === 'duration') {
-      handleTransition('activity', 'backward');
+    if (currentField === "activity") {
+      handleTransition("activity", "backward");
+    } else if (currentField === "duration") {
+      handleTransition("activity", "backward");
     }
-  }
+  };
 
   const handleGoHome = () => {
-    navigation.navigate('TabNavigator');
+    navigation.navigate("Home");
   };
 
   const RoundedButton = ({ title, onPress, color }) => {
@@ -55,31 +70,28 @@ const RoutineScreen = () => {
   };
 
   const handleSaveActivity = () => {
-    handleTransition('duration', 'forward');
+    handleTransition("duration", "forward");
   };
 
   const handleSaveDuration = () => {
-  
-    handleTransition('summary', 'forward');
+    handleTransition("summary", "forward");
   };
 
   useEffect(() => {
-    if (currentField === 'activity') {
+    if (currentField === "activity") {
       setTitle("Inserisci un'attività della tua routine");
-    } else if (currentField === 'duration') {
+    } else if (currentField === "duration") {
       setTitle("Inserisci la durata prevista (in minuti)");
-    } 
+    }
   }, [currentField]);
 
   useEffect(() => {
-    if (currentField === 'activity') {
+    if (currentField === "activity") {
       setCurrentImage(routine);
-    } else if (currentField === 'duration') {
-      setCurrentImage(time); 
-    } 
+    } else if (currentField === "duration") {
+      setCurrentImage(time);
+    }
   }, [currentField]);
-
- 
 
   return (
     <ImageBackground
@@ -89,10 +101,7 @@ const RoutineScreen = () => {
       }}
       source={background}
     >
-      <KeyboardAvoidingView
-        style={{ flex: 1 }}
-        behavior="padding"
-      >
+      <KeyboardAvoidingView style={{ flex: 1 }} behavior="padding">
         <View style={styles.spacer}></View>
         <Animated.View
           style={[
@@ -105,14 +114,12 @@ const RoutineScreen = () => {
             },
           ]}
         >
-          <Text style={styles.title}>
-            {title}
-          </Text>
+          <Text style={styles.title}>{title}</Text>
           <View style={styles.imageContainer}>
             <Image source={currentImage} style={styles.icon} />
           </View>
-          
-          {currentField === 'activity' && (
+
+          {currentField === "activity" && (
             <TextInput
               style={styles.input}
               placeholder="Nome dell'attività"
@@ -121,7 +128,7 @@ const RoutineScreen = () => {
               onFocus={resetAnimation}
             />
           )}
-          {currentField === 'duration' && (
+          {currentField === "duration" && (
             <TextInput
               style={styles.input}
               placeholder="Durata prevista (in minuti)"
@@ -131,15 +138,27 @@ const RoutineScreen = () => {
               onFocus={resetAnimation}
             />
           )}
-          {currentField === 'activity' && (
-            <RoundedButton title="Salva" onPress={handleSaveActivity} color="coral" />
+          {currentField === "activity" && (
+            <RoundedButton
+              title="Salva"
+              onPress={handleSaveActivity}
+              color="coral"
+            />
           )}
-          {currentField === 'duration' && (
-            <RoundedButton title="Fatto" onPress={handleSaveDuration && handleGoHome} color="coral" />
+          {currentField === "duration" && (
+            <RoundedButton
+              title="Fatto"
+              onPress={handleSaveDuration && handleGoHome}
+              color="coral"
+            />
           )}
           <View style={styles.back}>
-            {currentField !== 'activity' && (
-              <RoundedButton title="Indietro" onPress={() => handleGoBack()} color="coral" />
+            {currentField !== "activity" && (
+              <RoundedButton
+                title="Indietro"
+                onPress={() => handleGoBack()}
+                color="coral"
+              />
             )}
           </View>
         </Animated.View>
@@ -147,26 +166,26 @@ const RoutineScreen = () => {
     </ImageBackground>
   );
 };
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowWidth = Dimensions.get("window").width;
+const windowHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginBottom: windowHeight * 0.05,
-    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    backgroundColor: "rgba(255, 255, 255, 0.5)",
     marginVertical: windowHeight * 0.001,
     marginHorizontal: windowWidth * 0.1,
     borderRadius: windowWidth * 0.05,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: "white",
   },
   title: {
     color: "white",
     marginBottom: 20,
     fontSize: 15,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     textAlign: "center",
     textTransform: "uppercase",
     textShadowColor: "rgba(0, 0, 0, 0.75)",
@@ -175,46 +194,41 @@ const styles = StyleSheet.create({
   },
   imageContainer: {
     alignItems: "center",
-    
-  
-    
   },
   icon: {
-    width: windowWidth *0.6,
-    height: windowHeight *0.25,
+    width: windowWidth * 0.6,
+    height: windowHeight * 0.25,
     borderRadius: 20,
-    marginBottom:20
+    marginBottom: 20,
   },
-  
+
   input: {
     height: 40,
-    borderColor: 'coral',
+    borderColor: "coral",
     borderWidth: 3,
     marginBottom: 10,
     paddingHorizontal: 10,
-    backgroundColor: 'rgba(255, 255, 255, 1)',
-    borderRadius: 20
-    
+    backgroundColor: "rgba(255, 255, 255, 1)",
+    borderRadius: 20,
   },
   button: {
     borderRadius: windowWidth * 0.05,
     paddingVertical: windowHeight * 0.02,
     paddingHorizontal: windowWidth * 0.05,
     margin: windowWidth * 0.01,
-    width: '50%',
+    width: "50%",
     marginLeft: windowWidth * 0.2,
   },
   buttonText: {
-    color: 'white',
-    textAlign: "center"
+    color: "white",
+    textAlign: "center",
   },
   back: {
-    marginTop:10
+    marginTop: 10,
   },
   spacer: {
-    height: '25%'
+    height: "25%",
   },
-  
 });
 
 export default RoutineScreen;
