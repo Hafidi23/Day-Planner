@@ -8,6 +8,8 @@ import {
   Pressable,
   ActivityIndicator,
   KeyboardAvoidingView,
+  Platform,
+  TouchableOpacity,
 } from "react-native";
 import Svg, { Image, Ellipse, ClipPath } from "react-native-svg";
 import Animated, {
@@ -22,12 +24,8 @@ import Animated, {
 } from "react-native-reanimated";
 import { useNavigation } from "@react-navigation/native";
 import * as Yup from "yup";
-import { initializeAuth, getReactNativePersistence } from "firebase/auth";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { FirebaseApp } from "firebase/app";
-import { Firebase_DB, addDoc, collection } from "../FirebaseConfig";
-import { Firebase_Auth } from "../FirebaseConfig";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { Firebase_Auth, Firebase_App } from "../App";
+import { signInWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 
 export default function LoginPage() {
@@ -40,8 +38,6 @@ export default function LoginPage() {
   const [formValues, setFormValues] = useState({ email: "", password: "" });
   const [fullName, setFullName] = useState("");
   const [errors, setErrors] = useState({});
-
-  const auth = Firebase_Auth;
 
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -66,7 +62,7 @@ export default function LoginPage() {
     const interpolation = interpolate(
       imagePosition.value,
       [0, 1],
-      [-height / 1.6, 0]
+      [-height - 60, 0]
     );
     return {
       transform: [
@@ -130,20 +126,19 @@ export default function LoginPage() {
     try {
       if (isRegistering) {
         const response = await createUserWithEmailAndPassword(
-          auth,
+          Firebase_Auth,
           formValues.email,
           formValues.password
         );
-
-        await addDoc(collection(Firebase_DB, "users"), {
-          fullName,
-          email: formValues.email,
+        console.log(response);
+        const response1 = await updateProfile(Firebase_Auth.currentUser, {
+          displayName: fullName,
         });
 
-        console.log(response);
+        console.log(response1);
       } else {
         const response = await signInWithEmailAndPassword(
-          auth,
+          Firebase_Auth,
           formValues.email,
           formValues.password
         );
@@ -174,9 +169,12 @@ export default function LoginPage() {
         <Animated.View
           style={[styles.closeButtonContainer, closeButtonContainerStyle]}
         >
-          <Text onPress={() => (imagePosition.value = 1)}>X</Text>
+          <TouchableOpacity onPress={() => (imagePosition.value = 1)}>
+            <Text>X</Text>
+          </TouchableOpacity>
         </Animated.View>
       </Animated.View>
+
       <View style={styles.bottomContainer}>
         <Animated.View style={buttonsAnimatedStyle}>
           <Pressable style={styles.button} onPress={loginHandler}>
@@ -188,44 +186,49 @@ export default function LoginPage() {
             <Text style={styles.buttonText}>REGISTER</Text>
           </Pressable>
         </Animated.View>
+
         <Animated.View style={[styles.formInputContainer, formAnimatedStyle]}>
-          <KeyboardAvoidingView behavior="padding">
-            <TextInput
-              placeholder="Email"
-              value={formValues.email}
-              placeholderTextColor="black"
-              onChangeText={(text) => {
-                setFormValues({ ...formValues, email: text });
-                setErrors({ ...errors, email: undefined });
-              }}
-              style={styles.textInput}
-            />
-            {errors.email && (
-              <Text style={styles.errorText}>{errors.email}</Text>
-            )}
-            {isRegistering && (
+          <View style={styles.imageContainer}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
               <TextInput
-                placeholder="Full Name"
+                placeholder="Email"
+                value={formValues.email}
                 placeholderTextColor="black"
-                onChangeText={(text) => setFullName(text)}
+                onChangeText={(text) => {
+                  setFormValues({ ...formValues, email: text });
+                  setErrors({ ...errors, email: undefined });
+                }}
                 style={styles.textInput}
               />
-            )}
-            <TextInput
-              placeholder="Password"
-              value={formValues.password}
-              placeholderTextColor="black"
-              secureTextEntry={true}
-              onChangeText={(text) => {
-                setFormValues({ ...formValues, password: text });
-                setErrors({ ...errors, password: undefined });
-              }}
-              style={styles.textInput}
-            />
-            {errors.password && (
-              <Text style={styles.errorText}>{errors.password}</Text>
-            )}
-          </KeyboardAvoidingView>
+              {errors.email && (
+                <Text style={styles.errorText}>{errors.email}</Text>
+              )}
+              {isRegistering && (
+                <TextInput
+                  placeholder="Full Name"
+                  placeholderTextColor="black"
+                  onChangeText={(text) => setFullName(text)}
+                  style={styles.textInput}
+                />
+              )}
+              <TextInput
+                placeholder="Password"
+                value={formValues.password}
+                placeholderTextColor="black"
+                secureTextEntry={true}
+                onChangeText={(text) => {
+                  setFormValues({ ...formValues, password: text });
+                  setErrors({ ...errors, password: undefined });
+                }}
+                style={styles.textInput}
+              />
+              {errors.password && (
+                <Text style={styles.errorText}>{errors.password}</Text>
+              )}
+            </KeyboardAvoidingView>
+          </View>
           <Animated.View style={[styles.formButton, formButtonAnimatedStyle]}>
             <Pressable
               onPress={() => {

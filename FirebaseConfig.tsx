@@ -1,4 +1,4 @@
-import { initializeApp, FirebaseOptions } from "firebase/app";
+import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import {
   getFirestore,
@@ -8,7 +8,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 
-const firebaseConfig: FirebaseOptions = {
+const firebaseConfig = {
   apiKey: "AIzaSyCqoC5qRz7f2kEtrRFnws328NJyEYf5OqA",
   authDomain: "planit-1-19c5a.firebaseapp.com",
   projectId: "planit-1-19c5a",
@@ -16,6 +16,5 @@ const firebaseConfig: FirebaseOptions = {
   messagingSenderId: "292627831464",
   appId: "1:292627831464:web:1b4d471728650d210e809d",
 };
-export const Firebase_App = initializeApp(firebaseConfig);
-export const Firebase_Auth = getAuth(Firebase_App);
-export const Firebase_DB = getFirestore(Firebase_App);
+
+export { firebaseConfig };

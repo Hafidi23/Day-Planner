@@ -12,26 +12,35 @@ import {
   SectionList,
   TextInput,
   Button,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "../components/Header";
 import TodoItem from "../components/TodoItem";
 import AddButton from "../components/AddButton";
 import background from "../assets/background-1.jpg";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { Picker } from '@react-native-picker/picker';
+import DateTimePicker from "@react-native-community/datetimepicker";
+
+const getPeriodOfDay = (selectedHour) => {
+  if (selectedHour >= 5 && selectedHour < 12) {
+    return "morning";
+  } else if (selectedHour >= 12 && selectedHour < 19) {
+    return "afternoon";
+  } else {
+    return "evening";
+  }
+};
 
 export default function HomeScreen() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState("");
   const [time, setTime] = useState(new Date());
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [selectedTimeOfDay, setSelectedTimeOfDay] = useState("morning");
   const [todos, setTodos] = useState({
     morning: [],
     afternoon: [],
     evening: [],
   });
+
   const changeHandler = (val) => {
     setText(val);
   };
@@ -49,13 +58,14 @@ export default function HomeScreen() {
     });
   };
 
-  const onAddTodo = ({ text, time, selectedTimeOfDay }) => {
+  const onAddTodo = ({ text, time }) => {
+    const periodOfDay = getPeriodOfDay(time.getHours());
     setTodos((prevTodos) => {
       return {
         ...prevTodos,
-        [selectedTimeOfDay]: [
+        [periodOfDay]: [
           { text, time, key: Math.random().toString() },
-          ...prevTodos[selectedTimeOfDay],
+          ...prevTodos[periodOfDay],
         ].filter((todo) => !!todo),
       };
     });
@@ -63,24 +73,26 @@ export default function HomeScreen() {
   };
 
   const openModal = () => {
-    setAddTodoModalVisible(true)
-  }
+    setAddTodoModalVisible(true);
+  };
+
   const toggleDatePicker = () => {
     setDatePickerVisibility(!isDatePickerVisible);
   };
+
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || time;
-    setDatePickerVisibility(Platform.OS === 'ios');
+    setDatePickerVisibility(Platform.OS === "ios");
     setTime(currentDate);
   };
-  
+
   const data = [
     { text: "Mattina", data: todos.morning },
     { text: "Pomeriggio", data: todos.afternoon },
     { text: "Sera", data: todos.evening },
   ];
 
-  return ( 
+  return (
     <SafeAreaView style={{ flex: 1 }}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
@@ -91,26 +103,26 @@ export default function HomeScreen() {
             }}
             source={background}
           >
-              <Header />
-              <SectionList
-          sections={data}
-          keyExtractor={(item, index) => item + index}
-          renderItem={({ item }) => (
-            <TodoItem
-              item={item}
-              pressHandler={() => pressHandler(item.key)}
+            <Header />
+            <SectionList
+              sections={data}
+              keyExtractor={(item, index) => item + index}
+              renderItem={({ item }) => (
+                <TodoItem
+                  item={item}
+                  pressHandler={() => pressHandler(item.key)}
+                />
+              )}
+              renderSectionHeader={({ section: { text } }) => (
+                <Text style={styles.listHeader}>{text}</Text>
+              )}
             />
-          )}
-          renderSectionHeader={({ section: { text } }) => (
-            <Text style={styles.listHeader}>{text}</Text>
-          )}
-        />
-              <AddButton
-                setAddTodoModalVisible={() => setAddTodoModalVisible(true)}
-                onAddTodo={onAddTodo}
-                modalRef={modalRef}
-                openModal={openModal}
-              />
+            <AddButton
+              setAddTodoModalVisible={() => setAddTodoModalVisible(true)}
+              onAddTodo={onAddTodo}
+              modalRef={modalRef}
+              openModal={openModal}
+            />
             <Modal
               transparent={true}
               visible={addTodoModalVisible}
@@ -120,66 +132,53 @@ export default function HomeScreen() {
             >
               <View style={styles.modalOverlay}>
                 <View style={styles.modalContent}>
-                  <Text style={styles.title}>Scrivi le cose che devi fare: </Text>
+                  <Text style={styles.title}>
+                    Scrivi le cose che devi fare:{" "}
+                  </Text>
                   <TextInput
                     style={styles.input}
                     placeholder="New Todo..."
                     onChangeText={changeHandler}
                   />
                   <Text style={styles.title}>Seleziona L'ora:</Text>
-                  <TouchableOpacity onPress={toggleDatePicker} style={styles.dateContainer}>
-                <Text style={styles.dateText}>Pick Date</Text>
-              </TouchableOpacity>
-              {isDatePickerVisible && (
-                <DateTimePicker
-                  value={time}
-                  mode="time"
-                  display="default"
-                  onChange={onChange}
-                />
+                  <TouchableOpacity
+                    onPress={toggleDatePicker}
+                    style={styles.dateContainer}
+                  >
+                    <Text style={styles.dateText}>Pick Date</Text>
+                  </TouchableOpacity>
+                  {isDatePickerVisible && (
+                    <DateTimePicker
+                      value={time}
+                      mode="time"
+                      display="default"
+                      onChange={onChange}
+                    />
                   )}
-                  <View style={styles.titleView}>
-                  <Text style={styles.title}>Seleziona il momento della giornata:</Text>
-               <View style={{ borderRadius: 10, overflow: 'hidden' }}>
-                    <Picker
-                      selectedValue={selectedTimeOfDay}
-                      onValueChange={(itemValue) => setSelectedTimeOfDay(itemValue)}
-                      style={styles.picker}
-                    >
-                      <Picker.Item label='Morning' value={"morning"} />
-                      <Picker.Item label='Afternoon' value={"afternoon"} />
-                      <Picker.Item label='Evening' value={"evening"} />
-                    </Picker>
-                    </View>
-                    </View>
                   <Button
                     onPress={() => {
                       onAddTodo({
-                        text: text, 
-                        time: time, 
-                        selectedTimeOfDay: selectedTimeOfDay, 
+                        text: text,
+                        time: time,
                       });
                     }}
                     title="Add Todo"
                     color="#EBAB70"
                   />
                   <View style={styles.buttonContainer}>
-                  <Button
-                    onPress={() => setAddTodoModalVisible(false)}
-                    title="Close"
-                    color="#EBAB70"
+                    <Button
+                      onPress={() => setAddTodoModalVisible(false)}
+                      title="Close"
+                      color="#EBAB70"
                     />
-                    </View>
+                  </View>
                 </View>
               </View>
-              </Modal>
-              
-            </ImageBackground>
-           
+            </Modal>
+          </ImageBackground>
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
-   
   );
 }
 
@@ -208,14 +207,13 @@ const styles = StyleSheet.create({
   title: {
     textAlign: "center",
     marginBottom: 5,
-    textTransform:"uppercase",
+    textTransform: "uppercase",
     color: "white",
     textShadowColor: "rgba(0, 0, 0, 0.3)",
     textShadowOffset: { width: -2, height: 2 },
     textShadowRadius: 10,
-    fontSize:16
+    fontSize: 16,
   },
-  
   modalContent: {
     width: 300,
     backgroundColor: "coral",
@@ -228,33 +226,23 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "coral",
     borderRadius: 25,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
- 
   buttonContainer: {
-    marginTop:10
-  },
-  picker: {
-    height: 50,
-    width: "100%",
-    marginBottom: 16,
-    backgroundColor:"white",
-    borderWidth: 1,
-    
+    marginTop: 10,
   },
   dateText: {
     color: "white",
     fontSize: 24,
     marginBottom: 8,
-    textAlign:"center",
+    textAlign: "center",
     borderWidth: 2,
     borderRadius: 20,
     borderColor: "white",
-    width: "50%"
-    
+    width: "50%",
   },
   dateContainer: {
     justifyContent: "center",
-    alignItems:"center"
-  }
+    alignItems: "center",
+  },
 });

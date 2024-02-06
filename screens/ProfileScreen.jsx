@@ -8,50 +8,14 @@ import {
   TouchableOpacity,
 } from "react-native";
 import FeatherIcon from "react-native-vector-icons/Feather";
-import { getAuth, onAuthStateChanged, signOut } from "firebase/auth";
-import {
-  getFirestore,
-  collection,
-  query,
-  where,
-  getDocs,
-} from "firebase/firestore";
-
-const auth = getAuth();
-const db = getFirestore();
+import { signOut } from "firebase/auth";
+import { Firebase_Auth } from "../App";
 
 export default function ProfileScreen() {
-  const [user, setUser] = useState(null);
-  const [fullName, setFullName] = useState("");
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (authUser) => {
-      if (authUser) {
-        setUser(authUser);
-
-        const q = query(
-          collection(db, "users"),
-          where("email", "==", authUser.email)
-        );
-        const querySnapshot = await getDocs(q);
-
-        if (!querySnapshot.empty) {
-          const userDoc = querySnapshot.docs[0].data();
-          setFullName(userDoc.fullName);
-        }
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
-
+  const user = Firebase_Auth.currentUser;
   const handleLogout = async () => {
     try {
-      await signOut(auth);
+      await signOut(Firebase_Auth);
     } catch (error) {
       console.error("Errore durante il logout", error);
     }
@@ -69,13 +33,17 @@ export default function ProfileScreen() {
             style={styles.profileAvatar}
           />
 
-          <Text style={styles.profileName}>{fullName}</Text>
+          <Text style={styles.profileName}>{user.displayName}</Text>
 
           <Text style={styles.profileEmail}>
             {user ? user.email : "Email non disponibile"}
           </Text>
 
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity
+            onPress={() => {
+              handleLogout;
+            }}
+          >
             <View style={styles.profileAction}>
               <Text style={styles.profileActionText}>Edit Profile</Text>
 

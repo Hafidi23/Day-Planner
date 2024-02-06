@@ -9,16 +9,14 @@ import {
   Image,
 } from "react-native";
 import FeatherIcon from "react-native-vector-icons/Feather";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-
-const auth = getAuth();
+import { Firebase_Auth } from "../App";
 
 const SECTIONS = [
   {
     header: "Preferences",
     items: [
       { icon: "globe", label: "Language", value: "English", type: "input" },
-      { icon: "moon", label: "Dark Mode", value: false, type: "boolean" },
+
       { icon: "wifi", label: "Use Wi-Fi", value: true, type: "boolean" },
     ],
   },
@@ -64,21 +62,7 @@ function SectionRow({ label, value, type, index, onPress }) {
 }
 
 export default function SettingScreen() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
-        setUser(authUser);
-      } else {
-        setUser(null);
-      }
-    });
-
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+  const user = Firebase_Auth.currentUser;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -100,7 +84,7 @@ export default function SettingScreen() {
           />
 
           <View style={styles.profileBody}>
-            <Text style={styles.profileName}>John Doe</Text>
+            <Text style={styles.profileName}>{user.displayName}</Text>
 
             <Text style={styles.profileHandle}>
               {user ? user.email : "Email non disponibile"}

@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import React from "react";
 import Animated, {
@@ -145,7 +146,6 @@ const AddButton = ({ openModal }) => {
           New Goal
         </Animated.Text>
       </Animated.View>
-
       <Pressable
         style={styles.contentContainer}
         onPress={() => {
@@ -164,7 +164,7 @@ const AddButton = ({ openModal }) => {
 };
 
 export default AddButton;
-
+const windowHeight = Dimensions.get("window").height;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -185,12 +185,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+
   icon: {
-    width: 30,
-    height: 30,
+    width: 35,
+    height: 35,
   },
   text: {
     color: "white",
-    fontSize: 18,
+    fontSize: 20,
   },
 });

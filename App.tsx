@@ -10,11 +10,16 @@ import RoutineScreen from "./screens/RoutineScreen";
 import LoginAnimated from "./screens/LoginAnimated";
 import SettingPage from "./screens/SettingScreen";
 import { useEffect, useState } from "react";
-import { User, onAuthStateChanged } from "firebase/auth";
-import { Firebase_Auth, Firebase_App } from "./FirebaseConfig";
-
+import { User, getAuth, onAuthStateChanged } from "firebase/auth";
+import { firebaseConfig } from "./FirebaseConfig";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
+
+export const Firebase_App = initializeApp(firebaseConfig);
+export const Firebase_Auth = getAuth(Firebase_App);
+export const Firebase_DB = getFirestore(Firebase_App);
 
 function InsideLayout() {
   return (
@@ -56,13 +61,11 @@ export default function App() {
       setUser(user);
     });
 
-    // Pulizia del sottoscrizione
     return () => unsubscribe();
   }, []);
 
-  // Aggiungi questa condizione per assicurarti che Firebase sia inizializzato prima di visualizzare la navigazione
   if (!Firebase_App) {
-    return null; // o mostra uno spinner di caricamento, a seconda delle tue esigenze
+    return null;
   }
   return (
     <NavigationContainer>
