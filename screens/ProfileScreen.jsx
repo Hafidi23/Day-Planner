@@ -6,6 +6,7 @@ import {
   Image,
   Text,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { signOut } from "firebase/auth";
@@ -17,7 +18,7 @@ export default function ProfileScreen() {
     try {
       await signOut(Firebase_Auth);
     } catch (error) {
-      console.error("Errore durante il logout", error);
+      Alert.error("Errore durante il logout", error);
     }
   };
 
@@ -102,6 +103,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#007bff",
     borderRadius: 12,
+    border: 1,
+    borderColor: "grey",
   },
   profileActionText: {
     marginRight: 8,
